@@ -1,12 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import "./HomePageGridItem.css";
 
-function HomePageGridItem({ img }) {
+function HomePageGridItem({
+  img,
+  id,
+  setOnTop,
+  gridSize,
+  typeName,
+  typeColor,
+}) {
   return (
     <div
-      className="grid-item col-lg-6 col-sm-12"
-      style={{ backgroundColor: img, height: "100vh" }}
-    ></div>
+      className={`grid-item col-lg-${gridSize} col-sm-12 d-flex align-items-center justify-content-center p-0`}
+      onMouseOver={() => {
+        setOnTop(id);
+      }}
+      onMouseLeave={() => {
+        setOnTop(null);
+      }}
+    >
+      <div
+        className="grid-item-inner"
+        style={{
+          backgroundImage: `url(${img})`,
+          backgroundSize: "cover",
+          backgroundPosition: "right",
+          backgroundRepeat: "no-repeat",
+        }}
+      ></div>
+      <a href="#" style={{ color: typeColor }}>
+        {typeName}
+      </a>
+    </div>
   );
 }
 
