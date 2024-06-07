@@ -1,5 +1,6 @@
 import React from "react";
 import "./HomePageGridItem.css";
+import { Link } from "react-router-dom";
 
 function HomePageGridItem({
   img,
@@ -28,7 +29,7 @@ function HomePageGridItem({
           backgroundRepeat: "no-repeat",
         }}
       ></div>
-      <a href="#" style={{ color: typeColor }}>
+      <a href="/stock" style={{ color: typeColor }}>
         {typeName}
       </a>
     </div>

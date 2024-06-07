@@ -1,14 +1,15 @@
 import React from "react";
 import NavItem from "./NavItem";
+import { Link } from "react-router-dom";
 
 function Navbar({ items }) {
   return (
     <>
       <nav className="navbar navbar-expand-lg fixed-top navbar-light">
         <div className="container">
-          <a className="navbar-brand" href="#">
-            Navbar
-          </a>
+          <Link className="navbar-brand" aria-current="page" to="/">
+            BrandName
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -28,9 +29,13 @@ function Navbar({ items }) {
             </ul>
             <ul className="navbar-nav ms-lg-auto">
               <li className="nav-item ms-lg-auto">
-                <a className="nav-link active" aria-current="page" href="#">
-                  login
-                </a>
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/login"
+                >
+                  Login
+                </Link>
               </li>
             </ul>
           </div>
