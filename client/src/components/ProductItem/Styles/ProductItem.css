@@ -1,0 +1,50 @@
+.bg-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-zoom img {
+  transition: transform 0.1s ease; /* Apply transition to the non-hover state as well */
+}
+
+.hover-zoom:hover img {
+  transform: scale(1.8);
+  filter: blur(10px) grayscale(100%);
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hover-overlay .mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.hover-overlay:hover {
+  opacity: 1;
+}
+
+.ripple {
+  position: relative;
+}
+
+.text-overlay {
+  font-size: 35px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}

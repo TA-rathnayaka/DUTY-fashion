@@ -1,0 +1,59 @@
+.grid-item {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.grid-item-inner {
+  transition: transform 0.1s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  filter: blur(0) grayscale(0);
+}
+
+.grid-item-inner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.1s ease-in-out;
+  z-index: 1;
+}
+
+.grid-item:hover .grid-item-inner {
+  transform: scale(1.8);
+  filter: blur(10px) grayscale(100%);
+}
+
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid-container > div {
+  flex: 1 0 50%;
+  height: 50vh;
+  overflow: hidden;
+}
+
+.grid-item a {
+  position: absolute;
+  z-index: 2;
+  font-size: 100px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+  text-decoration: none;
+}
+
+.grid-item:hover a {
+  opacity: 1;
+}
