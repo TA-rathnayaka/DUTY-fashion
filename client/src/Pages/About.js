@@ -1,5 +1,5 @@
 import React from "react";
-import SideCover from "../components/About/AboutSideCover/AboutSideCover";
+import AboutSideCover from "../components/About/AboutSideCover/AboutSideCover";
 import ProductItem from "../components/ProductItem/ProductItem";
 import AboutCover from "../components/About/AboutCover/AboutCover";
 
@@ -8,8 +8,14 @@ function AboutUs() {
     <section>
       <AboutCover />
       <div className="container">
-        <div className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center shadow">
-          <SideCover />
+        <div
+          className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center shadow"
+          style={{
+            marginTop: "-100px",
+            backdropFilter: "blur(30px)",
+          }}
+        >
+          <AboutSideCover />
           <div className="col-12 col-lg-6 col-xl-7">
             <div className="row justify-content-xl-center">
               <div className="col-12 col-xl-11">

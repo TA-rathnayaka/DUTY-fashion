@@ -1,97 +1,62 @@
 import React from "react";
-import LoginCover from "../components/LoginCover/LoginCover";
+import LoginCover from "../components/Login/LoginCover/LoginCover";
+import LoginSideCover from "../components/Login/LoginSideCover/LoginSideCover";
 
 function Login() {
   return (
-    <section className="text-center">
+    <>
       <LoginCover />
-      <div
-        className="card mx-4 mx-md-5 shadow-5-strong bg-body-tertiary"
-        style={{
-          marginTop: "-100px",
-          backdropFilter: "blur(30px)",
-        }}
-      >
-        <div className="card-body py-5 px-md-5">
-          <div className="row d-flex justify-content-center">
-            <div className="col-lg-8">
-              <h2 className="fw-bold mb-5">Login</h2>
-              <form>
-                <div data-mdb-input-init className="form-outline mb-4">
-                  <input
-                    type="email"
-                    id="form3Example3"
-                    className="form-control"
-                  />
-                  <label className="form-label" for="form3Example3">
-                    Email address
-                  </label>
-                </div>
+      <div className="container">
+        <div
+          className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center shadow"
+          style={{
+            marginTop: "-100px",
+            backdropFilter: "blur(30px)",
+          }}
+        >
+          <LoginSideCover />
+          <div className="col-12 col-lg-6 col-xl-7">
+            <div className="justify-content-center">
+              <div className="col-lg-12">
+                <h2 className="fw-bold mb-5">Login</h2>
+                <form>
+                  <div data-mdb-input-init className="form-outline mb-4">
+                    <input
+                      type="email"
+                      id="form3Example3"
+                      className="form-control"
+                    />
+                    <label className="form-label" for="form3Example3">
+                      Email address
+                    </label>
+                  </div>
 
-                <div data-mdb-input-init className="form-outline mb-4">
-                  <input
-                    type="password"
-                    id="form3Example4"
-                    className="form-control"
-                  />
-                  <label className="form-label" for="form3Example4">
-                    Password
-                  </label>
-                </div>
-
-                <button
-                  type="submit"
-                  data-mdb-button-init
-                  data-mdb-ripple-init
-                  className="btn btn-primary btn-block mb-4"
-                >
-                  Login
-                </button>
-
-                <div className="text-center">
-                  <p>or Login with:</p>
-                  <button
-                    type="button"
-                    data-mdb-button-init
-                    data-mdb-ripple-init
-                    className="btn btn-link btn-floating mx-1"
-                  >
-                    <i className="fab fa-facebook-f dark-icon"></i>
-                  </button>
+                  <div data-mdb-input-init className="form-outline mb-4">
+                    <input
+                      type="password"
+                      id="form3Example4"
+                      className="form-control"
+                    />
+                    <label className="form-label" for="form3Example4">
+                      Password
+                    </label>
+                  </div>
 
                   <button
-                    type="button"
+                    type="submit"
                     data-mdb-button-init
                     data-mdb-ripple-init
-                    className="btn btn-link btn-floating mx-1"
+                    className="btn btn-primary btn-block mb-4"
                   >
-                    <i className="fab fa-google"></i>
+                    Login
                   </button>
-
-                  <button
-                    type="button"
-                    data-mdb-button-init
-                    data-mdb-ripple-init
-                    className="btn btn-link btn-floating mx-1"
-                  >
-                    <i className="fab fa-twitter"></i>
-                  </button>
-
-                  <button
-                    type="button"
-                    data-mdb-button-init
-                    data-mdb-ripple-init
-                    className="btn btn-link btn-floating mx-1"
-                  >
-                    <i className="fab fa-github"></i>
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </>
   );
 }
 

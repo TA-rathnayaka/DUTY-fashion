@@ -1,17 +1,9 @@
 import React from "react";
 import sideCoverImage from "./Images/about.jpg";
+import SideCover from "../../SideCover";
 
-function SideCover() {
-  return (
-    <div className="col-12 col-lg-6 col-xl-5 px-0">
-      <img
-        className="img-fluid rounded"
-        loading="lazy"
-        src={sideCoverImage}
-        alt="Fashion About 1"
-      />
-    </div>
-  );
+function AboutSideCover() {
+  return <SideCover img={sideCoverImage} />;
 }
 
-export default SideCover;
+export default AboutSideCover;

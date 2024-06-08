@@ -1,5 +1,5 @@
 import React from "react";
-import SignUpCover from "../components/SignupCover/SignupCover";
+import SignUpCover from "../components/Signup/SignupCover/SignupCover";
 
 function Login() {
   return (
