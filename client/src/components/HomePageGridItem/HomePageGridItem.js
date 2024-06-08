@@ -1,5 +1,5 @@
 import React from "react";
-import "./HomePageGridItem.css";
+import "./Styles/HomePageGridItem.css";
 import { Link } from "react-router-dom";
 
 function HomePageGridItem({
@@ -25,7 +25,7 @@ function HomePageGridItem({
         style={{
           backgroundImage: `url(${img})`,
           backgroundSize: "cover",
-          backgroundPosition: "right",
+          backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       ></div>

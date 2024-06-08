@@ -2,7 +2,7 @@ import React from "react";
 import NavItem from "./NavItem";
 import { Link } from "react-router-dom";
 
-function Navbar({ items }) {
+function Navbar({ items, logged }) {
   return (
     <>
       <nav className="navbar navbar-expand-lg fixed-top navbar-light">
@@ -34,7 +34,16 @@ function Navbar({ items }) {
                   aria-current="page"
                   to="/login"
                 >
-                  Login
+                  {logged || "Login"}
+                </Link>
+              </li>
+              <li className="nav-item ms-lg-auto">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/signup"
+                >
+                  {logged || "Sign up"}
                 </Link>
               </li>
             </ul>
