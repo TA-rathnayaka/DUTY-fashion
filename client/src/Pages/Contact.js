@@ -18,27 +18,43 @@ function Contact() {
           <div className="col-12 col-lg-6 col-xl-7">
             <div className="justify-content-center">
               <div className="col-lg-12">
-                <h2 className="fw-bold mb-5">Login</h2>
+                <h2 className="fw-bold mb-5">Contact Us</h2>
                 <form>
-                  <div data-mdb-input-init className="form-outline mb-4">
-                    <input
-                      type="email"
-                      id="form3Example3"
-                      className="form-control"
-                    />
-                    <label className="form-label" for="form3Example3">
-                      Email address
-                    </label>
+                  <div className="row">
+                    <div className="col-md-6 mb-1">
+                      <div data-mdb-input-init className="form-outline">
+                        <input
+                          type="text"
+                          id="form3Example1"
+                          className="form-control"
+                        />
+                        <label className="form-label" htmlFor="form3Example1">
+                          Your name
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-md-6 mb-1">
+                      <div data-mdb-input-init className="form-outline mb-4">
+                        <input
+                          type="email"
+                          id="form3Example3"
+                          className="form-control"
+                        />
+                        <label className="form-label" htmlFor="form3Example3">
+                          Email address
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <div data-mdb-input-init className="form-outline mb-4">
-                    <input
-                      type="password"
+                    <textarea
                       id="form3Example4"
                       className="form-control"
-                    />
-                    <label className="form-label" for="form3Example4">
-                      Password
+                      rows="4"
+                    ></textarea>
+                    <label className="form-label" htmlFor="form3Example4">
+                      Your message
                     </label>
                   </div>
 
@@ -48,7 +64,7 @@ function Contact() {
                     data-mdb-ripple-init
                     className="btn btn-primary btn-block mb-4"
                   >
-                    Login
+                    Submit
                   </button>
                 </form>
               </div>

@@ -7,8 +7,16 @@ function Navbar({ items, logged }) {
     <>
       <nav className="navbar navbar-expand-lg fixed-top navbar-light">
         <div className="container">
-          <Link className="navbar-brand" aria-current="page" to="/">
-            BrandName
+          <Link
+            className="navbar-brand"
+            aria-current="page"
+            to="/"
+            style={{
+              fontFamily: "'Sprite Graffiti', sans-serif",
+              fontSize: "35px",
+            }}
+          >
+            DUTY
           </Link>
           <button
             className="navbar-toggler"

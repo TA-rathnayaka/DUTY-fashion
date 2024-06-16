@@ -21,9 +21,9 @@ function AboutUs() {
               <div className="col-12 col-xl-11">
                 <h2 className="mb-3">About Us</h2>
                 <p className="lead fs-4 text-secondary mb-3">
-                  At [Your Brand Name], we believe in empowering individuals
-                  through fashion. Our collections are designed to celebrate
-                  uniqueness and style.
+                  At Duty, we believe in empowering individuals through fashion.
+                  Our collections are designed to celebrate uniqueness and
+                  style.
                 </p>
                 <p className="mb-5">
                   Our journey began with a vision to redefine fashion by making
