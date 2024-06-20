@@ -29,9 +29,9 @@ function HomePageGridItem({
           backgroundRepeat: "no-repeat",
         }}
       ></div>
-      <a href="/stock" style={{ color: typeColor }}>
+      <Link to={`/stock?gender=${typeName}`} style={{ color: typeColor }}>
         {typeName}
-      </a>
+      </Link>
     </div>
   );
 }

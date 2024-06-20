@@ -1,8 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import LoginCover from "../components/Login/LoginCover/LoginCover";
 import LoginSideCover from "../components/Login/LoginSideCover/LoginSideCover";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = {
+      email,
+      password,
+    };
+    console.log(data);
+    try {
+      const response = await axios.post("/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        console.log("Sign in successful");
+      }
+    } catch (error) {
+      console.error("There was an error sign in!", error);
+    }
+  };
   return (
     <>
       <LoginCover />
@@ -19,12 +44,16 @@ function Login() {
             <div className="justify-content-center">
               <div className="col-lg-12">
                 <h2 className="fw-bold mb-5">Login</h2>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div data-mdb-input-init className="form-outline mb-4">
                     <input
                       type="email"
                       id="form3Example3"
                       className="form-control"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                     />
                     <label className="form-label" for="form3Example3">
                       Email address
@@ -36,6 +65,10 @@ function Login() {
                       type="password"
                       id="form3Example4"
                       className="form-control"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
                     />
                     <label className="form-label" for="form3Example4">
                       Password

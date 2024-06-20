@@ -1,16 +1,23 @@
 import React from "react";
 import "./Styles/ProductItem.css";
+import { Link } from "react-router-dom";
 
-function ProductItem({ img, categoryName, categoryColor, productPrice }) {
+function ProductItem({ img, categoryName, categoryColor, gender, item }) {
   return (
     <div className="col-lg-4 col-md-6 mb-4">
       <div className="bg-image hover-zoom ripple">
-        <a href="#!">
+        <Link
+          to={
+            item
+              ? `/collection/${item.product_id}`
+              : `/collection/${gender}/${categoryName}`
+          }
+        >
           <img src={img} className="w-100" alt="Product" />
           <div className="hover-overlay">
             <div className="mask"></div>
             <div className="text-overlay" style={{ color: categoryColor }}>
-              {categoryName}
+              {item ? item.product_name : categoryName}
             </div>
             <div
               className="mask"
@@ -19,13 +26,13 @@ function ProductItem({ img, categoryName, categoryColor, productPrice }) {
               <div className="d-flex justify-content-start align-items-start h-100">
                 <h5>
                   <span className="badge bg-body-tertiary pt-2 ms-3 mt-3 text-dark">
-                    {productPrice && productPrice}
+                    {item && item.price + "$"}
                   </span>
                 </h5>
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );
