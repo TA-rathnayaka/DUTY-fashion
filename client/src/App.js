@@ -7,6 +7,7 @@ import Signup from "./Pages/Signup";
 import Login from "./Pages/Login";
 import ListOfProducts from "./Pages/ListOfProducts";
 import ProductPage from "./Pages/ProductPage";
+import CartItems from "./Pages/CartItems";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Contact from "./Pages/Contact";
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/stock" element={<Stock />} />
+        <Route path="/cart" element={<CartItems />} />
         <Route
           path="/collection/:gender/:category"
           element={<ListOfProducts />}
