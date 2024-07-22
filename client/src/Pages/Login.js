@@ -6,6 +6,7 @@ import LoginSideCover from "../components/Login/LoginSideCover/LoginSideCover";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -13,7 +14,6 @@ function Login() {
       email,
       password,
     };
-    console.log(data);
     try {
       const response = await axios.post("/login", data, {
         headers: {
@@ -22,9 +22,14 @@ function Login() {
       });
 
       if (response.status === 200) {
-        console.log("Sign in successful");
+        setMessage("Sign in successful");
       }
     } catch (error) {
+      if (error.response && error.response.status === 400) {
+        setMessage("Email already exists or invalid credentials");
+      } else {
+        setMessage("There was an error signing in. Please try again.");
+      }
       console.error("There was an error sign in!", error);
     }
   };
@@ -74,7 +79,9 @@ function Login() {
                       Password
                     </label>
                   </div>
-
+                  {message && (
+                    <div className="alert alert-info mt-3">{message}</div>
+                  )}
                   <button
                     type="submit"
                     data-mdb-button-init

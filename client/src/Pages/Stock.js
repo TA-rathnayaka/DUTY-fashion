@@ -8,7 +8,6 @@ function Stock() {
   const [backEndData, setBackEndData] = useState([{}]);
   const [searchParams] = useSearchParams();
   const gender = searchParams.get("gender");
-  console.log(gender);
   const fetchDate = async () => {
     const response = await axios.get("/data", {
       params: {
@@ -16,6 +15,7 @@ function Stock() {
         gender: gender,
       },
     });
+    console.log(response.data);
     setBackEndData(response.data);
   };
   useEffect(() => {

@@ -34,7 +34,6 @@ async function data() {
   let users = await db.query("SELECT * FROM user_table");
   return users.rows;
 }
-
 app.get("/", async (req, res) => {
   const data_ = await data();
   console.log(data_);

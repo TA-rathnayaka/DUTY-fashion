@@ -12,7 +12,6 @@ function ProductPage() {
   useEffect(() => {
     fetchDate();
   }, []);
-  console.log(item);
   return (
     <>
       <div className="row mt-5 pt-5">

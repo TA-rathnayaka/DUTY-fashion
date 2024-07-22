@@ -8,6 +8,7 @@ function Signup() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,10 +28,10 @@ function Signup() {
       });
 
       if (response.status === 200) {
-        console.log("Signup successful");
+        setMessage("Signup successful");
       }
     } catch (error) {
-      console.error("There was an error signing up!", error);
+      setMessage("There was an error signing up!", error);
     }
   };
 
@@ -109,7 +110,9 @@ function Signup() {
                       Password
                     </label>
                   </div>
-
+                  {message && (
+                    <div className="alert alert-info mt-3">{message}</div>
+                  )}
                   <button
                     type="submit"
                     data-mdb-button-init
