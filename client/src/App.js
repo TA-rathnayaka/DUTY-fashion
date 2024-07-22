@@ -6,7 +6,7 @@ import Stock from "./Pages/Stock";
 import Signup from "./Pages/Signup";
 import Login from "./Pages/Login";
 import ListOfProducts from "./Pages/ListOfProducts";
-import ProductPage from "./Pages/ProductPage";
+import ProductPage from "./Pages/ProductPage/ProductPage";
 import CartItems from "./Pages/CartItems";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Contact from "./Pages/Contact";
