@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import HomePageContent from "./Pages/HomePageContent";
 import About from "./Pages/About";
 import Stock from "./Pages/Stock";
