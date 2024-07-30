@@ -1,17 +1,17 @@
 .product-item {
   position: relative;
   overflow: hidden;
-  border-radius: 15px; /* More rounded corners for a modern look */
-  background: #f9f9f9; /* Light background to make the product stand out */
+  border-radius: 12px; /* Slightly less rounded for a modern touch */
+  background: #ffffff; /* Clean background to make the product stand out */
   transition: transform 0.3s ease, box-shadow 0.3s ease,
     background-color 0.3s ease;
-  border: 1px solid #ddd; /* Light border to define the product area */
+  border: 1px solid #e0e0e0; /* Light border for definition */
 }
 
 .product-item:hover {
-  transform: scale(1.05); /* Subtle scaling effect on hover */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Deeper shadow for more emphasis */
-  background-color: #ffffff; /* Slight color change on hover */
+  transform: scale(1.03); /* Subtle scaling effect on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Softer shadow for emphasis */
+  background-color: #f7f7f7; /* Slight color change on hover */
 }
 
 .product-link {
@@ -21,12 +21,12 @@
 
 .product-img {
   transition: transform 0.3s ease, filter 0.3s ease;
-  border-radius: 15px; /* Match corners with the item */
+  border-radius: 12px; /* Match corners with the item */
 }
 
 .product-item:hover .product-img {
-  transform: scale(1.15); /* Larger scale for a more dramatic effect */
-  filter: brightness(0.8) contrast(1.2); /* Adjust brightness and contrast for better effect */
+  transform: scale(1.1); /* Larger scale for a noticeable effect */
+  filter: brightness(0.9) contrast(1.1); /* Adjust brightness and contrast */
 }
 
 .overlay {
@@ -39,41 +39,36 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: #ffffff;
   opacity: 0;
   transition: opacity 0.3s ease, background-color 0.3s ease;
-  border-radius: 15px; /* Match corners with the item */
+  border-radius: 12px; /* Match corners with the item */
 }
 
 .product-item:hover .overlay {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.4); /* Darker background for more contrast */
+  background: rgba(0, 0, 0, 0.5); /* Darker background for more contrast */
 }
 
 .overlay-content {
-  font-size: 1.6rem; /* Slightly larger text for better visibility */
-  font-family: "Poppins", sans-serif;
-  font-weight: 700; /* Bold text for prominence */
+  font-size: 1.4rem; /* Slightly adjusted text size */
+  font-family: "Montserrat", sans-serif; /* Modern sans-serif font */
+  font-weight: 600; /* Semi-bold text for prominence */
   text-align: center; /* Center text alignment */
 }
 
 .price-badge {
-  background: rgba(
-    0,
-    0,
-    0,
-    0.7
-  ); /* Darker badge background for a striking look */
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px; /* Circular badge for a unique shape */
-  margin-top: 1.5rem;
+  background: rgba(0, 0, 0, 0.8); /* Darker badge background */
+  padding: 0.5rem 1rem;
+  border-radius: 20px; /* Rounded badge for a unique look */
+  margin-top: 1rem;
   color: #ffffff; /* White text for contrast */
-  font-weight: bold;
-  font-size: 1.2rem; /* Slightly larger font size for the badge */
+  font-weight: 600; /* Semi-bold text */
+  font-size: 1.1rem; /* Slightly adjusted font size */
 }
 
 .product-item:hover .price-badge {
-  background: #007bff; /* Blue background for the badge on hover */
+  background: #0056b3; /* Dark blue background for the badge on hover */
   color: #ffffff; /* White text color for better contrast */
 }
 
@@ -82,23 +77,23 @@
   bottom: 1rem; /* Position button at the bottom of the item */
   left: 50%;
   transform: translateX(-50%);
-  background-color: #007bff; /* Blue background */
+  background-color: #0056b3; /* Dark blue background */
   color: #ffffff; /* White text */
-  padding: 0.75rem 1.5rem; /* Padding for a comfortable click */
-  border-radius: 25px; /* Rounded corners */
+  padding: 0.5rem 1rem; /* Adjusted padding for a comfortable click */
+  border-radius: 20px; /* Rounded corners */
   border: none;
-  font-size: 1rem; /* Standard font size */
-  font-weight: bold; /* Bold text */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  font-weight: 600; /* Semi-bold text */
   transition: background-color 0.3s ease, transform 0.3s ease;
   cursor: pointer; /* Pointer cursor on hover */
-  z-index: 2; /* Make sure it’s above other content */
+  z-index: 2; /* Ensure it’s above other content */
 }
 
 .add-to-cart-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  background-color: #004494; /* Even darker blue on hover */
+  transform: scale(1.03); /* Slightly enlarge on hover */
 }
 
 .add-to-cart-btn:active {
-  transform: scale(0.95); /* Slightly shrink on click */
+  transform: scale(0.97); /* Slightly shrink on click */
 }
