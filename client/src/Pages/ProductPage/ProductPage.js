@@ -21,7 +21,7 @@ function ProductPage() {
     event.preventDefault();
 
     const data = { item_id: item.item_id, wanted_amount: quantity };
-
+    console.log("Submitting data:", data);
     try {
       const response = await axios.post("/cart", data, {
         headers: {
