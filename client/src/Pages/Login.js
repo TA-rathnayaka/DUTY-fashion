@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoginCover from "../components/Login/LoginCover/LoginCover";
 import LoginSideCover from "../components/Login/LoginSideCover/LoginSideCover";
@@ -7,6 +8,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,6 +25,7 @@ function Login() {
 
       if (response.status === 200) {
         setMessage("Sign in successful");
+        navigate(-1);
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -42,6 +45,7 @@ function Login() {
           style={{
             marginTop: "-100px",
             backdropFilter: "blur(30px)",
+            backgroundColor: "#ffffffa0",
           }}
         >
           <LoginSideCover />

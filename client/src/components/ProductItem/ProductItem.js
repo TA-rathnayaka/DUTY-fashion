@@ -21,7 +21,7 @@ function ProductItem({ img, categoryName, categoryColor, gender, item }) {
             </div>
             {item && (
               <div className="price-badge">
-                <span>{item.price}$</span>
+                <span>${item.price}</span>
               </div>
             )}
           </div>

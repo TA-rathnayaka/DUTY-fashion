@@ -17,6 +17,23 @@ function ProductPage() {
     setSelectedSize(response.data[0].size);
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const data = { item_id: item.item_id, wanted_amount: quantity };
+
+    try {
+      const response = await axios.post("/cart", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Response:", response);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [id]);
@@ -107,7 +124,10 @@ function ProductPage() {
               </button>
             </div>
 
-            <form className="d-flex justify-content-left">
+            <form
+              className="d-flex justify-content-left"
+              onSubmit={handleSubmit}
+            >
               <button className="btn btn-dark ms-1" type="submit">
                 Add to cart
                 <i className="fas fa-shopping-cart ms-1"></i>

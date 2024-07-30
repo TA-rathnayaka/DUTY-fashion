@@ -13,6 +13,7 @@ function AboutUs() {
           style={{
             marginTop: "-100px",
             backdropFilter: "blur(30px)",
+            backgroundColor: "#ffffffa0",
           }}
         >
           <AboutSideCover />

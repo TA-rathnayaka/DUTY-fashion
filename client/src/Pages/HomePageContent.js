@@ -29,7 +29,7 @@ function HomePageContent() {
         setOnTop={setGridElement}
         gridSize={firstGridSize}
         typeName={"Male"}
-        typeColor={"#A0DEFF"}
+        typeColor={"#007bff"}
       />
       <HomePageGridItem
         id="1"

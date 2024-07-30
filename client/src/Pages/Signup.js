@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SignUpCover from "../components/Signup/SignupCover/SignupCover";
 import SignUpSideCover from "../components/Signup/SignupSideCover/LoginSideCover";
 import axios from "axios";
@@ -9,6 +10,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,6 +31,7 @@ function Signup() {
 
       if (response.status === 200) {
         setMessage("Signup successful");
+        navigate(-1);
       }
     } catch (error) {
       setMessage("There was an error signing up!", error);
@@ -44,6 +47,7 @@ function Signup() {
           style={{
             marginTop: "-100px",
             backdropFilter: "blur(30px)",
+            backgroundColor: "#ffffffa0",
           }}
         >
           <SignUpSideCover />

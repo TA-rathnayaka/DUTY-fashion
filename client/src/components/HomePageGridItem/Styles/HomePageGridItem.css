@@ -5,30 +5,40 @@
 }
 
 .grid-item-inner {
-  transition: transform 0.1s ease-in-out;
+  position: relative;
+  transition: transform 0.1s ease-in-out, filter 0.3s ease; /* Smooth transitions for both scale and filter */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;
-  filter: blur(0) grayscale(0);
+  filter: blur(0); /* Remove grayscale and only apply blur effect */
 }
 
-.grid-item-inner::after {
+.grid-item-inner::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0);
-  transition: background 0.1s ease-in-out;
-  z-index: 1;
+  background: rgba(255, 255, 255, 0); /* Initially no mask */
+  transition: background 0.3s ease; /* Smooth transition for the mask */
+  z-index: 1; /* Ensure it’s above the image but below other content */
 }
 
 .grid-item:hover .grid-item-inner {
-  transform: scale(1.8);
-  filter: blur(10px) grayscale(100%);
+  transform: scale(1.8); /* Zoom effect on hover */
+  filter: blur(10px); /* Apply blur effect on hover */
+}
+
+.grid-item:hover .grid-item-inner::before {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.6
+  ); /* Semi-transparent white mask on hover */
 }
 
 .grid-container {

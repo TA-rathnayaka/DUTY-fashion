@@ -104,17 +104,52 @@ route.get("/all/:id", async (req, res) => {
 });
 
 route.get("/cart", async (req, res) => {
-  if (!req.user) return res.send("user is not authenticated").status(401);
+  if (!req.user) return res.status(401).send("user is not authenticated");
 
   const id = req.user.user_id;
   try {
     const result = await db.query(
-      "SELECT * FROM user_product INNER JOIN item_table ON item_table.item_id = user_product.item_id INNER JOIN user_table ON user_table.user_id = user_product.user_id WHERE user_table.user_id = $1;",
+      "SELECT * FROM user_product INNER JOIN item_table ON item_table.item_id = user_product.item_id INNER JOIN product_table ON product_table.product_id = item_table.product_id WHERE user_product.user_id = $1;",
       [id]
     );
     res.json(result.rows);
   } catch (error) {
     console.error("Error handling /collection request:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+route.post("/cart", async (req, res) => {
+  if (!req.user) {
+    return res.status(401).send("user is not authenticated");
+  }
+
+  const { user_id, item_id, wanted_amount } = {
+    user_id: req.user.user_id,
+    ...req.body,
+  };
+
+  try {
+    const checkResult = await db.query(
+      "SELECT * FROM user_product WHERE user_id = $1 AND item_id = $2",
+      [user_id, item_id]
+    );
+
+    if (checkResult.rows.length > 0) {
+      const updateResult = await db.query(
+        "UPDATE user_product SET wanted_amount = wanted_amount + $3 WHERE user_id = $1 AND item_id = $2 RETURNING *",
+        [user_id, item_id, wanted_amount]
+      );
+      res.json(updateResult.rows[0]);
+    } else {
+      const insertResult = await db.query(
+        "INSERT INTO user_product (user_id, item_id, wanted_amount) VALUES ($1, $2, $3) RETURNING *",
+        [user_id, item_id, wanted_amount]
+      );
+      res.json(insertResult.rows[0]);
+    }
+  } catch (error) {
+    console.error("Error handling /cart request:", error);
     res.status(500).send("Internal Server Error");
   }
 });
