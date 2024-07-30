@@ -10,7 +10,6 @@ function ListOfProducts() {
     const response = await axios.get(`/all/${gender}/${category}`);
 
     setBackEndData(response.data);
-    console.log(backEndData);
   };
   useEffect(() => {
     fetchDate();
