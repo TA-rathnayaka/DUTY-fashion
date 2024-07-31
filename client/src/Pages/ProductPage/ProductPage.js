@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./css/ProductPage.css";
 
 function ProductPage() {
@@ -9,6 +10,7 @@ function ProductPage() {
   const [allItems, setAllItems] = useState([]);
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await axios.get(`/all/${id}`);
@@ -30,7 +32,12 @@ function ProductPage() {
       });
       console.log("Response:", response);
     } catch (error) {
-      console.log("Error:", error);
+      // Redirect to login page if there's an authentication error
+      if (error.response && error.response.status === 401) {
+        navigate("/login");
+      } else {
+        console.log("Error:", error);
+      }
     }
   };
 

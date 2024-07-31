@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function CartItem({ item, onDelete, onEdit }) {
+function CartItem({ item, onDelete, onEdit, setTotalPrice }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedAmount, setEditedAmount] = useState(item.wanted_amount);
 
@@ -16,6 +16,11 @@ function CartItem({ item, onDelete, onEdit }) {
   const handleDelete = () => {
     onDelete(item.item_id);
   };
+
+  useEffect(() => {
+    // Update total price whenever editedAmount changes
+    setTotalPrice((prevPrice) => prevPrice + item.wanted_amount * item.price);
+  }, [editedAmount, item.price, item.wanted_amount, setTotalPrice]);
 
   return (
     <div className="row align-items-center" style={{ marginBottom: "1rem" }}>

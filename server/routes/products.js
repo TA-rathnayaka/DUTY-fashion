@@ -154,4 +154,68 @@ route.post("/cart", async (req, res) => {
   }
 });
 
+route.patch("/cart", async (req, res) => {
+  if (!req.user) {
+    return res.status(401).send("user is not authenticated");
+  }
+
+  const { user_id, item_id, wanted_amount } = {
+    user_id: req.user.user_id,
+    ...req.body,
+  };
+
+  try {
+    const updateResult = await db.query(
+      "UPDATE user_product SET wanted_amount = $3 WHERE user_id = $1 AND item_id = $2 RETURNING *",
+      [user_id, item_id, wanted_amount]
+    );
+    res.json(updateResult.rows[0]);
+  } catch (error) {
+    console.error("Error handling /cart request:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+route.delete("/cart/:item_id", async (req, res) => {
+  if (!req.user) {
+    return res.status(401).send("User is not authenticated");
+  }
+
+  const { item_id } = req.params;
+
+  if (!item_id) {
+    return res.status(400).send("Item ID is required");
+  }
+
+  try {
+    const result = await db.query(
+      "DELETE FROM user_product WHERE user_id = $1 AND item_id = $2 RETURNING *",
+      [req.user.user_id, item_id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).send("Item not found or already deleted");
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error handling /cart request:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+route.get("/all", async (req, res) => {
+  try {
+    const response = await db.query(
+      "SELECT * FROM product_table INNER JOIN item_table ON product_table.product_id = item_table.product_id"
+    );
+
+    res.status(200).json(response.rows);
+  } catch (error) {
+    console.error("Error fetching products and items:", error);
+
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 export default route;

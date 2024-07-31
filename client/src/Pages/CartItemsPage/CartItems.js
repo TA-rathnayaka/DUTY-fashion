@@ -5,11 +5,63 @@ import axios from "axios";
 
 function CartItems() {
   const [cartData, setCartData] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const fetchDate = async () => {
     const response = await axios.get(`/cart`);
     console.log(response.data);
 
     setCartData(response.data);
+  };
+
+  const onEdit = async (id, editedAmount) => {
+    try {
+      const response = await axios.patch(
+        "/cart",
+        { item_id: id, wanted_amount: editedAmount },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Successfully edited the cart item");
+      } else {
+        console.warn(`Unexpected response status: ${response.status}`);
+      }
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        if (error.response.status === 400) {
+          console.error("Bad request. Please check the input data.");
+        } else {
+          console.error(`Server error: ${error.response.status}`);
+        }
+      } else {
+        // Network error or no response
+        console.error("Network error or no response received.");
+      }
+    }
+  };
+
+  const onDelete = async (item_id) => {
+    try {
+      const response = await axios.delete(
+        `/cart/${item_id}`,
+
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response.status === 200) {
+        setCartData(cartData.filter((item) => item.item_id !== item_id));
+        console.log("successfully deleted the cart item");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+      } else {
+      }
+      console.error("There was an error deleting data", error);
+    }
   };
 
   useEffect(() => {
@@ -39,7 +91,12 @@ function CartItems() {
 
                       <div className="row mb-4 d-flex justify-content-between align-items-center">
                         {cartData.map((item) => (
-                          <CartItem item={item} />
+                          <CartItem
+                            item={item}
+                            onEdit={onEdit}
+                            onDelete={onDelete}
+                            setTotalPrice={setTotalPrice}
+                          />
                         ))}
                       </div>
 
@@ -60,7 +117,7 @@ function CartItems() {
 
                       <div className="d-flex justify-content-between mb-5">
                         <h5>Total price</h5>
-                        <h5>$ {}</h5>
+                        <h5>$ {totalPrice.toFixed(2)}</h5>
                       </div>
                     </div>
                   </div>

@@ -11,6 +11,7 @@ import CartItems from "./Pages/CartItemsPage/CartItems";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Contact from "./Pages/ContactPage/Contact";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
+import AdminPage from "./Pages/AdminPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/stock" element={<Stock />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="/cart" element={<CartItems />} />
         </Route>
