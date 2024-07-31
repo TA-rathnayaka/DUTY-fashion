@@ -12,15 +12,10 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      email,
-      password,
-    };
+    const data = { email, password };
     try {
       const response = await axios.post("/login", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
 
       if (response.status === 200) {
@@ -33,9 +28,10 @@ function Login() {
       } else {
         setMessage("There was an error signing in. Please try again.");
       }
-      console.error("There was an error sign in!", error);
+      console.error("There was an error signing in!", error);
     }
   };
+
   return (
     <>
       <LoginCover />
@@ -46,51 +42,86 @@ function Login() {
             marginTop: "-100px",
             backdropFilter: "blur(30px)",
             backgroundColor: "#ffffffa0",
+
+            borderRadius: "8px", // Rounded corners for the shadow container
           }}
         >
           <LoginSideCover />
           <div className="col-12 col-lg-6 col-xl-7">
-            <div className="justify-content-center">
+            <div
+              className="justify-content-center"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               <div className="col-lg-12">
-                <h2 className="fw-bold mb-5">Login</h2>
+                <h2
+                  style={{
+                    fontSize: "1.25rem", // h5 size
+                    fontWeight: "normal",
+                    marginBottom: "2rem",
+                  }}
+                >
+                  Login
+                </h2>
                 <form onSubmit={handleSubmit}>
-                  <div data-mdb-input-init className="form-outline mb-4">
+                  <div data-mdb-input-init style={{ marginBottom: "1rem" }}>
                     <input
                       type="email"
                       id="form3Example3"
                       className="form-control"
                       value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
+                      onChange={(e) => setEmail(e.target.value)}
+                      style={{
+                        fontSize: "0.875rem", // Smaller font size for input fields
                       }}
                     />
-                    <label className="form-label" for="form3Example3">
+                    <label
+                      className="form-label"
+                      htmlFor="form3Example3"
+                      style={{ fontSize: "0.875rem" }} // Match font size with input
+                    >
                       Email address
                     </label>
                   </div>
 
-                  <div data-mdb-input-init className="form-outline mb-4">
+                  <div data-mdb-input-init style={{ marginBottom: "1rem" }}>
                     <input
                       type="password"
                       id="form3Example4"
                       className="form-control"
                       value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
+                      onChange={(e) => setPassword(e.target.value)}
+                      style={{
+                        fontSize: "0.875rem", // Smaller font size for input fields
                       }}
                     />
-                    <label className="form-label" for="form3Example4">
+                    <label
+                      className="form-label"
+                      htmlFor="form3Example4"
+                      style={{ fontSize: "0.875rem" }} // Match font size with input
+                    >
                       Password
                     </label>
                   </div>
                   {message && (
-                    <div className="alert alert-info mt-3">{message}</div>
+                    <div
+                      className="alert alert-info mt-3"
+                      style={{ fontSize: "0.875rem" }} // Match font size with other text
+                    >
+                      {message}
+                    </div>
                   )}
                   <button
                     type="submit"
                     data-mdb-button-init
                     data-mdb-ripple-init
                     className="btn btn-primary btn-block mb-4"
+                    style={{
+                      fontSize: "0.875rem", // Smaller font size for button text
+                    }}
                   >
                     Login
                   </button>

@@ -1,0 +1,43 @@
+.navbar {
+  padding: 0.5rem 2rem; /* Compact height */
+  font-family: "Arial", sans-serif; /* Clean, neutral sans-serif font */
+  background-color: transparent; /* Transparent background */
+  box-shadow: none; /* No shadow for a flat design */
+}
+
+.navbar-brand {
+  font-family: "Georgia", serif; /* Elegant serif font */
+  font-size: 30px; /* Slightly smaller size */
+  color: #212121; /* Darker color for better readability */
+  text-transform: capitalize; /* Capitalize only the first letter */
+  font-weight: normal; /* Normal font weight for a softer look */
+  letter-spacing: 0.5px; /* Subtle letter spacing */
+  transition: color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.navbar-brand:hover {
+  color: #333; /* Slightly lighter color on hover */
+  transform: scale(1.05); /* Slight scaling effect on hover */
+}
+
+.nav-link {
+  color: #555; /* Medium gray color for readability */
+  font-size: 14px; /* Slightly smaller size */
+  padding: 0.5rem 1rem; /* Adjusted padding */
+  border-radius: 4px; /* Softer corners */
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.nav-link:hover {
+  color: #007bff; /* Highlight color */
+  background-color: rgba(0, 123, 255, 0.1); /* Light background on hover */
+  transform: translateY(-1px); /* Slight lift effect */
+}
+
+.nav-item {
+  margin-left: 1rem; /* Consistent spacing */
+}
+
+.nav-item:last-child {
+  margin-right: 0; /* Remove margin from last item */
+}

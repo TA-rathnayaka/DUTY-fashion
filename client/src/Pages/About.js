@@ -1,6 +1,5 @@
 import React from "react";
 import AboutSideCover from "../components/About/AboutSideCover/AboutSideCover";
-import ProductItem from "../components/ProductItem/ProductItem";
 import AboutCover from "../components/About/AboutCover/AboutCover";
 
 function AboutUs() {
@@ -12,21 +11,40 @@ function AboutUs() {
           className="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center shadow"
           style={{
             marginTop: "-100px",
-            backdropFilter: "blur(30px)",
+            backdropFilter: "blur(20px)",
             backgroundColor: "#ffffffa0",
+            borderRadius: "15px",
           }}
         >
           <AboutSideCover />
           <div className="col-12 col-lg-6 col-xl-7">
             <div className="row justify-content-xl-center">
               <div className="col-12 col-xl-11">
-                <h2 className="mb-3">About Us</h2>
-                <p className="lead fs-4 text-secondary mb-3">
+                <h5
+                  className="mb-4"
+                  style={{ fontWeight: "normal", fontSize: "1.25rem" }}
+                >
+                  About Us
+                </h5>
+                <p
+                  className="lead"
+                  style={{
+                    fontSize: "1rem",
+                    color: "#333",
+                    marginBottom: "1rem",
+                  }}
+                >
                   At Duty, we believe in empowering individuals through fashion.
                   Our collections are designed to celebrate uniqueness and
                   style.
                 </p>
-                <p className="mb-5">
+                <p
+                  style={{
+                    fontSize: "0.875rem",
+                    color: "#555",
+                    marginBottom: "2rem",
+                  }}
+                >
                   Our journey began with a vision to redefine fashion by making
                   it accessible and inclusive. We are dedicated to offering a
                   wide range of high-quality clothing that caters to diverse
@@ -34,14 +52,14 @@ function AboutUs() {
                   ethical practices drives us to continually improve and
                   innovate.
                 </p>
-                <div className="row gy-4 gy-md-0 gx-xxl-5X">
+                <div className="row gy-4 gx-4">
                   <div className="col-12 col-md-6">
-                    <div className="d-flex">
-                      <div className="me-4 text-primary">
+                    <div className="d-flex align-items-start">
+                      <div className="me-3 text-primary">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
+                          width="24"
+                          height="24"
                           fill="currentColor"
                           className="bi bi-heart-fill"
                           viewBox="0 0 16 16"
@@ -50,8 +68,13 @@ function AboutUs() {
                         </svg>
                       </div>
                       <div>
-                        <h2 className="h4 mb-3">Passionate Design</h2>
-                        <p className="text-secondary mb-0">
+                        <h5
+                          className="mb-2"
+                          style={{ fontWeight: "normal", fontSize: "1rem" }}
+                        >
+                          Passionate Design
+                        </h5>
+                        <p style={{ fontSize: "0.875rem", color: "#555" }}>
                           Our designs are crafted with passion and attention to
                           detail, ensuring each piece reflects our love for
                           fashion.
@@ -60,12 +83,12 @@ function AboutUs() {
                     </div>
                   </div>
                   <div className="col-12 col-md-6">
-                    <div className="d-flex">
-                      <div className="me-4 text-primary">
+                    <div className="d-flex align-items-start">
+                      <div className="me-3 text-primary">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
+                          width="24"
+                          height="24"
                           fill="currentColor"
                           className="bi bi-globe"
                           viewBox="0 0 16 16"
@@ -74,8 +97,13 @@ function AboutUs() {
                         </svg>
                       </div>
                       <div>
-                        <h2 className="h4 mb-3">Global Inspiration</h2>
-                        <p className="text-secondary mb-0">
+                        <h5
+                          className="mb-2"
+                          style={{ fontWeight: "normal", fontSize: "1rem" }}
+                        >
+                          Global Inspiration
+                        </h5>
+                        <p style={{ fontSize: "0.875rem", color: "#555" }}>
                           Drawing inspiration from fashion capitals around the
                           world, our collections are a blend of global trends
                           and timeless elegance.
@@ -84,7 +112,13 @@ function AboutUs() {
                     </div>
                   </div>
                 </div>
-                <p className="mt-4">
+                <p
+                  style={{
+                    fontSize: "0.875rem",
+                    color: "#555",
+                    marginTop: "2rem",
+                  }}
+                >
                   Join us on our journey to make fashion an expression of
                   individuality and a celebration of style. Explore our latest
                   collections and find pieces that resonate with your personal

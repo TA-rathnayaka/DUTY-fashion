@@ -4,7 +4,7 @@ import "./Styles/ProductItem.css";
 
 function ProductItem({ img, categoryName, categoryColor, gender, item }) {
   return (
-    <div className="col-lg-4 col-md-6 mb-4">
+    <div className="col-lg-3 col-md-4 col-sm-6 mb-3 p-4">
       <div className="product-item">
         <Link
           to={

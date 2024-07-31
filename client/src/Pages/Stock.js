@@ -25,7 +25,7 @@ function Stock() {
   return (
     <section>
       <div class="container py-5">
-        <h4 class="my-5">Categories</h4>
+        <h5 class="my-5 h5 m-0">Categories</h5>
         <div class="row">
           {backEndData.map((element) => {
             return (

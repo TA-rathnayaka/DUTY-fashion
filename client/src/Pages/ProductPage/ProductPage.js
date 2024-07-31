@@ -57,33 +57,77 @@ function ProductPage() {
   const availableSizes = [...new Set(allItems.map((item) => item.size))];
 
   return (
-    <div className="container mt-5 pt-5">
+    <div
+      className="container mt-5 pt-5"
+      style={{ padding: "3rem 1rem" }} // Responsive padding
+    >
       <div className="row">
         <div className="col-md-6 mb-4">
           <img
             src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg"
             className="img-fluid"
             alt={item.name}
+            style={{ maxWidth: "100%", height: "auto" }} // Maintain aspect ratio
           />
         </div>
         <div className="col-md-6 mb-4 pt-5">
           <div className="p-4">
             <div className="mb-3">
-              <span className="badge bg-dark me-1">{item.category}</span>
+              <span
+                className="badge bg-dark me-1"
+                style={{ fontSize: "0.875rem" }} // Match font size with other pages
+              >
+                {item.category}
+              </span>
               {item.amount === 0 && (
-                <span className="badge bg-danger me-1">Out of stock</span>
+                <span
+                  className="badge bg-danger me-1"
+                  style={{ fontSize: "0.875rem" }} // Match font size with other pages
+                >
+                  Out of stock
+                </span>
               )}
             </div>
 
-            <h2>{item.name}</h2>
-            <p className="lead price">${item.price}</p>
+            <h2
+              style={{
+                fontSize: "1.5rem", // Adjust to match consistent font size
+                fontWeight: "bold",
+                marginBottom: "1rem",
+              }}
+            >
+              {item.name}
+            </h2>
+            <p
+              className="lead price"
+              style={{ fontSize: "1.25rem" }} // Adjust to match consistent font size
+            >
+              ${item.price}
+            </p>
             <strong>
-              <p style={{ fontSize: "20px" }}>Description</p>
+              <p
+                style={{
+                  fontSize: "1.25rem", // Adjust to match consistent font size
+                  fontWeight: "bold",
+                }}
+              >
+                Description
+              </p>
             </strong>
-            <p>{item.description}</p>
+            <p
+              style={{
+                fontSize: "0.875rem", // Match font size with other pages
+              }}
+            >
+              {item.description}
+            </p>
 
             <div className="mb-3">
-              <strong>Select Size:</strong>
+              <strong
+                style={{ fontSize: "0.875rem" }} // Match font size with other pages
+              >
+                Select Size:
+              </strong>
               <div className="btn-group d-flex mt-2 size-buttons">
                 {availableSizes.map((size) => (
                   <button
@@ -99,6 +143,9 @@ function ProductPage() {
                       changeItemBasedOnSize(size);
                       setQuantity(1);
                     }}
+                    style={{
+                      fontSize: "0.875rem", // Match font size with other pages
+                    }}
                   >
                     {size}
                   </button>
@@ -111,14 +158,25 @@ function ProductPage() {
                 type="button"
                 className="btn btn-quantity"
                 onClick={handleDecrease}
+                style={{
+                  fontSize: "0.875rem", // Match font size with other pages
+                }}
               >
                 -
               </button>
-              <span className="quantity-display">{quantity}</span>
+              <span
+                className="quantity-display"
+                style={{ fontSize: "0.875rem" }} // Match font size with other pages
+              >
+                {quantity}
+              </span>
               <button
                 type="button"
                 className="btn btn-quantity"
                 onClick={handleIncrease}
+                style={{
+                  fontSize: "0.875rem", // Match font size with other pages
+                }}
               >
                 +
               </button>
@@ -128,7 +186,13 @@ function ProductPage() {
               className="d-flex justify-content-left"
               onSubmit={handleSubmit}
             >
-              <button className="btn btn-dark ms-1" type="submit">
+              <button
+                className="btn btn-dark ms-1"
+                type="submit"
+                style={{
+                  fontSize: "0.875rem", // Match font size with other pages
+                }}
+              >
                 Add to cart
                 <i className="fas fa-shopping-cart ms-1"></i>
               </button>

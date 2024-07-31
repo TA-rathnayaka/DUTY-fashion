@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import ContactCover from "../components/ContactCover/ContactCover";
-import SideCover from "../components/About/AboutSideCover/AboutSideCover";
+import ContactCover from "../../components/ContactCover/ContactCover";
+import SideCover from "../../components/About/AboutSideCover/AboutSideCover";
+import "./css/styles.css";
 
 function Contact() {
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992);
@@ -31,7 +32,7 @@ function Contact() {
           <div className="col-12 col-lg-6 col-xl-7">
             <div className="justify-content-center">
               <div className="col-lg-12">
-                <h2 className="fw-bold mb-5">Contact Us</h2>
+                <h5 className="mb-5">Contact Us</h5>
                 <form>
                   <div className="row">
                     <div className="col-md-6 mb-4">

@@ -9,7 +9,7 @@ import ListOfProducts from "./Pages/ListOfProducts";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 import CartItems from "./Pages/CartItemsPage/CartItems";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Contact from "./Pages/Contact";
+import Contact from "./Pages/ContactPage/Contact";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {
