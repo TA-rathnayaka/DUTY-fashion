@@ -9,7 +9,27 @@ function AdminPage() {
   const fetchData = async () => {
     try {
       const response = await axios.get(`/all`);
-      setAdminData(response.data);
+      const groupedData = response.data.reduce((acc, item) => {
+        if (!acc[item.product_id]) {
+          acc[item.product_id] = {
+            product_id: item.product_id,
+            product_name: item.product_name,
+            description: item.description,
+            gender: item.gender,
+            category: item.category,
+            sizes: [],
+            prices: [],
+            amounts: [],
+            item_ids: [],
+          };
+        }
+        acc[item.product_id].sizes.push(item.size);
+        acc[item.product_id].prices.push(item.price);
+        acc[item.product_id].amounts.push(item.amount);
+        acc[item.product_id].item_ids.push(item.item_id);
+        return acc;
+      }, {});
+      setAdminData(Object.values(groupedData));
     } catch (error) {
       console.error("Error fetching cart data:", error);
     }

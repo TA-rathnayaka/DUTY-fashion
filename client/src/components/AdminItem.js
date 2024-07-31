@@ -4,24 +4,25 @@ function AdminItem({ item, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(item.product_name);
   const [editedCategory, setEditedCategory] = useState(item.category);
+  const [editedDescription, setEditedDescription] = useState(item.description);
   const [selectedSize, setSelectedSize] = useState(null);
   const [editedAmount, setEditedAmount] = useState(0);
-  const [editedPrice, setEditedPrice] = useState(item.price);
+  const [editedPrice, setEditedPrice] = useState(0);
 
-  // Define sizes and their corresponding amounts
-  const sizes = [
-    { size: "S", amount: item.amountS || 0 },
-    { size: "M", amount: item.amountM || 0 },
-    { size: "L", amount: item.amountL || 0 },
-    { size: "XL", amount: item.amountXL || 0 },
-  ];
+  const sizes = item.sizes.map((size, index) => ({
+    size,
+    item_id: item.item_ids[index],
+    amount: item.amounts[index],
+    price: parseFloat(item.prices[index]),
+  }));
 
   useEffect(() => {
     if (selectedSize) {
       const selected = sizes.find((s) => s.size === selectedSize);
       setEditedAmount(selected ? selected.amount : 0);
+      setEditedPrice(selected ? selected.price : 0);
     }
-  }, [selectedSize]);
+  }, [selectedSize, sizes]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -32,21 +33,23 @@ function AdminItem({ item, onDelete, onEdit }) {
     const updatedSizes = sizes.reduce((acc, curr) => {
       if (curr.size === selectedSize) {
         acc[`amount${curr.size}`] = editedAmount;
+        acc[`price${curr.size}`] = editedPrice;
       } else {
         acc[`amount${curr.size}`] = curr.amount;
+        acc[`price${curr.size}`] = curr.price;
       }
       return acc;
     }, {});
-    onEdit(item.item_id, {
+    onEdit(item.product_id, {
       product_name: editedName,
       category: editedCategory,
+      description: editedDescription,
       ...updatedSizes,
-      price: editedPrice,
     });
   };
 
   const handleDelete = () => {
-    onDelete(item.item_id);
+    onDelete(item.product_id);
   };
 
   return (
@@ -56,7 +59,7 @@ function AdminItem({ item, onDelete, onEdit }) {
           src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
           className="img-fluid rounded-3"
           alt={item.product_name}
-          style={{ maxWidth: "100%", height: "auto" }} // Maintain aspect ratio
+          style={{ maxWidth: "100%", height: "auto" }}
         />
       </div>
       <div className="col-md-3 col-lg-3 col-xl-3">
@@ -65,13 +68,13 @@ function AdminItem({ item, onDelete, onEdit }) {
             type="text"
             value={editedCategory}
             onChange={(e) => setEditedCategory(e.target.value)}
-            className="form-control"
-            style={{ fontSize: "0.875rem" }} // Match font size with other pages
+            className="form-control my-3"
+            style={{ fontSize: "0.875rem" }}
           />
         ) : (
           <h6
             className="text-muted"
-            style={{ fontSize: "0.875rem", marginBottom: "0.5rem" }} // Match font size with other pages
+            style={{ fontSize: "0.875rem", marginBottom: "0.5rem" }}
           >
             {item.category}
           </h6>
@@ -81,16 +84,26 @@ function AdminItem({ item, onDelete, onEdit }) {
             type="text"
             value={editedName}
             onChange={(e) => setEditedName(e.target.value)}
-            className="form-control"
-            style={{ fontSize: "1rem", fontWeight: "bold" }} // Match font size and weight with other pages
+            className="form-control my-3"
+            style={{ fontSize: "1rem", fontWeight: "bold" }}
           />
         ) : (
-          <h6
-            className="mb-1"
-            style={{ fontSize: "1rem", fontWeight: "bold" }} // Match font size and weight with other pages
-          >
+          <h6 className="mb-1" style={{ fontSize: "1rem", fontWeight: "bold" }}>
             {item.product_name}
           </h6>
+        )}
+        {isEditing ? (
+          <textarea
+            value={editedDescription}
+            onChange={(e) => setEditedDescription(e.target.value)}
+            className="form-control my-3"
+            rows="3"
+            style={{ fontSize: "0.875rem" }}
+          />
+        ) : (
+          <p style={{ fontSize: "0.875rem", marginBottom: "0.5rem" }}>
+            {item.description}
+          </p>
         )}
         <div>
           {sizes.map(({ size }) => (
@@ -113,12 +126,12 @@ function AdminItem({ item, onDelete, onEdit }) {
           className="btn btn-link px-2"
           onClick={() => setEditedAmount(Math.max(0, editedAmount - 1))}
           disabled={!isEditing}
-          style={{ fontSize: "0.875rem" }} // Match font size with other pages
+          style={{ fontSize: "0.875rem" }}
         >
           <i className="fas fa-minus"></i>
         </button>
         <input
-          id={`quantity-${item.item_id}`}
+          id={`quantity-${item.product_id}`}
           min="0"
           name="quantity"
           value={editedAmount}
@@ -126,13 +139,13 @@ function AdminItem({ item, onDelete, onEdit }) {
           className="form-control form-control-sm"
           onChange={(e) => setEditedAmount(Number(e.target.value))}
           disabled={!isEditing}
-          style={{ fontSize: "0.875rem" }} // Match font size with other pages
+          style={{ fontSize: "0.875rem" }}
         />
         <button
           className="btn btn-link px-2"
           onClick={() => setEditedAmount(editedAmount + 1)}
           disabled={!isEditing}
-          style={{ fontSize: "0.875rem" }} // Match font size with other pages
+          style={{ fontSize: "0.875rem" }}
         >
           <i className="fas fa-plus"></i>
         </button>
@@ -144,14 +157,14 @@ function AdminItem({ item, onDelete, onEdit }) {
             value={editedPrice}
             onChange={(e) => setEditedPrice(Number(e.target.value))}
             className="form-control"
-            style={{ fontSize: "1rem", fontWeight: "bold" }} // Match font size and weight with other pages
+            style={{ fontSize: "1rem", fontWeight: "bold" }}
           />
         ) : (
-          <h6
-            className="mb-0"
-            style={{ fontSize: "1rem", fontWeight: "bold" }} // Match font size and weight with other pages
-          >
-            $ {parseFloat(item.price).toFixed(2)}
+          <h6 className="mb-0" style={{ fontSize: "1rem", fontWeight: "bold" }}>
+            ${" "}
+            {parseFloat(
+              sizes.find((s) => s.size === selectedSize)?.price || 0
+            ).toFixed(2)}
           </h6>
         )}
       </div>
@@ -161,7 +174,7 @@ function AdminItem({ item, onDelete, onEdit }) {
             <button
               className="btn btn-sm btn-primary"
               onClick={handleSave}
-              style={{ fontSize: "0.75rem" }} // Match font size with other pages
+              style={{ fontSize: "0.75rem" }}
             >
               Save
             </button>
@@ -169,7 +182,7 @@ function AdminItem({ item, onDelete, onEdit }) {
             <button
               className="btn btn-sm btn-secondary"
               onClick={handleEdit}
-              style={{ fontSize: "0.75rem" }} // Match font size with other pages
+              style={{ fontSize: "0.75rem" }}
             >
               Edit
             </button>
@@ -177,7 +190,7 @@ function AdminItem({ item, onDelete, onEdit }) {
           <button
             className="btn btn-sm btn-danger ms-2"
             onClick={handleDelete}
-            style={{ fontSize: "0.75rem" }} // Match font size with other pages
+            style={{ fontSize: "0.75rem" }}
           >
             Delete
           </button>
