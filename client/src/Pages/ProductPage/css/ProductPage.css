@@ -4,49 +4,45 @@
   padding: 1rem;
 }
 
-.card-registration {
-  border-radius: 15px;
-}
-
 .img-fluid {
-  border-radius: 15px;
-  transition: transform 0.3s ease;
+  border-radius: 15px; /* Softer corners */
+  transition: transform 0.3s ease; /* Smooth scaling effect */
 }
 
 .img-fluid:hover {
-  transform: scale(1.05);
+  transform: scale(1.05); /* Slightly larger image on hover */
 }
 
 .price {
-  color: #007bff;
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 1rem 0;
+  color: #007bff; /* Blue color for price */
+  font-size: 2rem; /* Larger font size for emphasis */
+  font-weight: 700; /* Bolder font weight */
+  margin: 1rem 0; /* Space above and below */
 }
 
 .size-buttons button,
 .btn-quantity {
-  width: 60px;
+  width: 60px; /* Consistent button width */
   padding: 10px;
   font-size: 14px;
-  border-radius: 5px;
-  border: 1px solid #343a40;
-  background-color: transparent;
-  color: #343a40;
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #343a40; /* Thin black border */
+  background-color: transparent; /* Transparent background */
+  color: #343a40; /* Black text color */
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .size-buttons button:hover,
 .btn-quantity:hover {
-  background-color: #343a40;
-  color: #ffffff;
-  transform: scale(1.05);
+  background-color: #343a40; /* Black background on hover */
+  color: #ffffff; /* White text on hover */
+  transform: scale(1.05); /* Slight scaling effect */
 }
 
 .size-buttons button.active,
 .btn-quantity.active {
-  background-color: #007bff;
-  color: #ffffff;
+  background-color: #007bff; /* Blue color for selected state */
+  color: #ffffff; /* White text color */
 }
 
 .btn-dark {
@@ -56,7 +52,7 @@
 }
 
 .btn-dark:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Darker blue on hover */
   color: #ffffff;
 }
 
@@ -72,28 +68,28 @@
 }
 
 .btn-outline-dark.active {
-  background-color: #007bff;
+  background-color: #007bff; /* Blue color for selected size */
   color: #ffffff;
 }
 
 .form-control {
-  border-radius: 10px;
+  border-radius: 10px; /* More rounded corners */
   padding: 12px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Larger shadow for better focus effect */
 }
 
 .quantity-control {
   display: flex;
   align-items: center;
-  margin: 1rem 0;
+  margin: 1rem 0; /* Space around quantity control */
 }
 
 .quantity-display {
-  font-size: 1.5rem;
-  margin: 0 1rem;
+  font-size: 1.5rem; /* Larger text for the amount */
+  margin: 0 1rem; /* Space between buttons and amount */
 }

@@ -68,7 +68,7 @@
 }
 
 .product-item:hover .price-badge {
-  background: #0056b3; /* Dark blue background for the badge on hover */
+  background: #007bff; /* Dark blue background for the badge on hover */
   color: #ffffff; /* White text color for better contrast */
 }
 
@@ -77,7 +77,7 @@
   bottom: 1rem; /* Position button at the bottom of the item */
   left: 50%;
   transform: translateX(-50%);
-  background-color: #0056b3; /* Dark blue background */
+  background-color: #007bff; /* Dark blue background */
   color: #ffffff; /* White text */
   padding: 0.5rem 1rem; /* Adjusted padding for a comfortable click */
   border-radius: 20px; /* Rounded corners */

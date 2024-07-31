@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ContactCover from "../components/ContactCover/ContactCover";
 import SideCover from "../components/About/AboutSideCover/AboutSideCover";
 
 function Contact() {
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 992);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <ContactCover />
@@ -16,7 +27,7 @@ function Contact() {
             backgroundColor: "#ffffffa0",
           }}
         >
-          <SideCover />
+          {isLargeScreen && <SideCover />}
           <div className="col-12 col-lg-6 col-xl-7">
             <div className="justify-content-center">
               <div className="col-lg-12">
