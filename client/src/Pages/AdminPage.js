@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminItem from "../components/AdminItem/AdminItem";
+import AddItem from "../components/AddItem/AddItem";
 
 import axios from "axios";
 
@@ -133,6 +134,7 @@ function AdminPage() {
                       <hr className="my-4" />
 
                       <div className="row mb-4 d-flex justify-content-between align-items-center">
+                        <AddItem />
                         {AdminData.map((item) => (
                           <AdminItem
                             key={item.item_id}
