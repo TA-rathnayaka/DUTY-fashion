@@ -35,54 +35,76 @@ function AdminPage() {
     }
   };
 
-  const onEdit = async (product_id, item_id, editedItem) => {
-    console.log(editedItem);
-    console.log(product_id);
-    console.log(item_id);
-    // try {
-    //   const response = await axios.patch(`/cart/${id}`, editedItem, {
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    //   if (response.status === 200) {
-    //     // Update the cart data with the edited item
-    //     setAdminData((prevCartData) =>
-    //       prevCartData.map((item) =>
-    //         item.item_id === id ? { ...item, ...editedItem } : item
-    //       )
-    //     );
-    //     console.log("Successfully edited the cart item");
-    //   } else {
-    //     console.warn(`Unexpected response status: ${response.status}`);
-    //   }
-    // } catch (error) {
-    //   if (error.response) {
-    //     if (error.response.status === 400) {
-    //       console.error("Bad request. Please check the input data.");
-    //     } else {
-    //       console.error(`Server error: ${error.response.status}`);
-    //     }
-    //   } else {
-    //     console.error("Network error or no response received.");
-    //   }
-    // }
+  const onEdit = async (product_id, item_ids, editedItem) => {
+    console.log("start");
+
+    const updatedProductDetails = {};
+    if (editedItem.product_name) {
+      updatedProductDetails.product_name = editedItem.product_name;
+    }
+    if (editedItem.description) {
+      updatedProductDetails.description = editedItem.description;
+    }
+
+    try {
+      if (Object.keys(updatedProductDetails).length > 0) {
+        const response = await axios.patch(
+          `/all/${product_id}`,
+          updatedProductDetails,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        console.log("Product details updated:", response.data);
+      }
+
+      if (editedItem.amounts || editedItem.prices) {
+        const updatedItems = item_ids
+          .map((item_id, index) => ({
+            item_id,
+            amount: editedItem.amounts ? editedItem.amounts[index] : undefined,
+            price: editedItem.prices ? editedItem.prices[index] : undefined,
+          }))
+          .filter(
+            (item) => item.amount !== undefined || item.price !== undefined
+          );
+
+        for (const item of updatedItems) {
+          const { item_id, amount, price } = item;
+          const updatedItemDetails = {};
+          if (amount !== undefined) updatedItemDetails.amount = amount;
+          if (price !== undefined) updatedItemDetails.price = price;
+
+          const itemResponse = await axios.patch(
+            `/items/${item_id}`,
+            updatedItemDetails,
+            {
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          console.log("Item details updated:", itemResponse.data);
+        }
+      }
+
+      console.log("Updates completed successfully.");
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
   };
 
-  const onDelete = async (item_id) => {
-    // try {
-    //   const response = await axios.delete(`/cart/${item_id}`, {
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    //   if (response.status === 200) {
-    //     setAdminData(AdminData.filter((item) => item.item_id !== item_id));
-    //     console.log("Successfully deleted the cart item");
-    //   }
-    // } catch (error) {
-    //   if (error.response && error.response.status === 400) {
-    //     console.error("Bad request. Please check the input data.");
-    //   } else {
-    //     console.error("There was an error deleting the data:", error);
-    //   }
-    // }
+  const onDelete = async (product_id) => {
+    try {
+      const response = await axios.delete(`/product/${product_id}`);
+      console.log(response.data.message);
+      setAdminData((items) =>
+        items.filter((item) => item.product_id !== product_id)
+      );
+    } catch (error) {
+      console.error(
+        "Error deleting product:",
+        error.response?.data?.error || error.message
+      );
+    }
   };
 
   useEffect(() => {

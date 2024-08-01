@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CartItem from "../../components/CartItem";
+import CartItem from "../../components/CartItem/CartItem";
 import "./css/styles.css";
 import axios from "axios";
 
@@ -8,7 +8,6 @@ function CartItems() {
   const [totalPrice, setTotalPrice] = useState(0);
   const fetchDate = async () => {
     const response = await axios.get(`/cart`);
-    console.log(response.data);
 
     setCartData(response.data);
   };
@@ -30,14 +29,12 @@ function CartItems() {
       }
     } catch (error) {
       if (error.response) {
-        // Server responded with a status other than 2xx
         if (error.response.status === 400) {
           console.error("Bad request. Please check the input data.");
         } else {
           console.error(`Server error: ${error.response.status}`);
         }
       } else {
-        // Network error or no response
         console.error("Network error or no response received.");
       }
     }

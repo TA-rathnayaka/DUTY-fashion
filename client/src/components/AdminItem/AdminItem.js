@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSave,
-  faEdit,
-  faTrash,
-  faMinus,
   faTrashCan,
-  faPen,
   faPenToSquare,
+  faMinus,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import "./css/styles.css";
 
@@ -43,22 +41,39 @@ function AdminItem({ item, onDelete, onEdit }) {
 
   const handleSave = () => {
     setIsEditing(false);
+
+    const updatedData = {};
+    if (editedName !== item.product_name) {
+      updatedData.product_name = editedName;
+    }
+    if (editedCategory !== item.category) {
+      updatedData.category = editedCategory;
+    }
+    if (editedDescription !== item.description) {
+      updatedData.description = editedDescription;
+    }
+
     const updatedSizes = sizes.map((curr) => {
       if (curr.size === selectedSize) {
         return { ...curr, amount: editedAmount, price: editedPrice };
       }
       return curr;
     });
-    const updatedAmounts = updatedSizes.map((s) => s.amount);
-    const updatedPrices = updatedSizes.map((s) => s.price);
 
-    onEdit(item.product_id, item.item_id, {
-      product_name: editedName,
-      category: editedCategory,
-      description: editedDescription,
-      amounts: updatedAmounts,
-      prices: updatedPrices,
-    });
+    if (selectedSize) {
+      const originalSizeData = sizes.find((s) => s.size === selectedSize);
+      if (originalSizeData.amount !== editedAmount) {
+        updatedData.amounts = updatedSizes.map((s) => s.amount);
+      }
+      if (originalSizeData.price !== editedPrice) {
+        updatedData.prices = updatedSizes.map((s) => s.price);
+      }
+    }
+
+    if (Object.keys(updatedData).length > 0) {
+      console.log(item);
+      onEdit(item.product_id, item.item_ids, updatedData);
+    }
   };
 
   const handleDelete = () => {
@@ -74,7 +89,7 @@ function AdminItem({ item, onDelete, onEdit }) {
         <img
           src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
           className="img-fluid rounded-3"
-          alt={item.product_name}
+          alt={editedName}
           style={{ maxWidth: "100%", height: "auto" }}
         />
       </div>
@@ -105,7 +120,7 @@ function AdminItem({ item, onDelete, onEdit }) {
           />
         ) : (
           <h6 className="mb-1" style={{ fontSize: "1rem", fontWeight: "bold" }}>
-            {item.product_name}
+            {editedName}
           </h6>
         )}
         {isEditing ? (
@@ -119,7 +134,7 @@ function AdminItem({ item, onDelete, onEdit }) {
           />
         ) : (
           <p style={{ fontSize: "0.875rem", marginBottom: "0.5rem" }}>
-            {item.description}
+            {editedDescription}
           </p>
         )}
         <div>
@@ -147,11 +162,11 @@ function AdminItem({ item, onDelete, onEdit }) {
               disabled={!isEditing}
               style={{ fontSize: "0.875rem" }}
             >
-              <i className="fas fa-minus"></i>
+              <FontAwesomeIcon icon={faMinus} />
             </button>
             <input
               id={`quantity-${item.product_id}`}
-              min="0"
+              min="1"
               name="quantity"
               value={editedAmount}
               type="number"
@@ -161,13 +176,12 @@ function AdminItem({ item, onDelete, onEdit }) {
               style={{ fontSize: "0.875rem" }}
             />
             <button
-              id={`amount-${item.product_id}`}
               className="btn btn-link px-2"
               onClick={() => setEditedAmount(editedAmount + 1)}
               disabled={!isEditing}
               style={{ fontSize: "0.875rem" }}
             >
-              <i className="fas fa-plus"></i>
+              <FontAwesomeIcon icon={faPlus} />
             </button>
           </div>
           <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
@@ -176,8 +190,7 @@ function AdminItem({ item, onDelete, onEdit }) {
                 id={`price-${item.product_id}`}
                 type="number"
                 value={editedPrice}
-                min="0"
-                step="0.01"
+                min="1"
                 onChange={(e) =>
                   setEditedPrice(parseFloat(e.target.value) || 0)
                 }
@@ -189,10 +202,7 @@ function AdminItem({ item, onDelete, onEdit }) {
                 className="mb-0"
                 style={{ fontSize: "1rem", fontWeight: "bold" }}
               >
-                $
-                {parseFloat(
-                  sizes.find((s) => s.size === selectedSize)?.price || 0
-                ).toFixed(2)}
+                ${parseFloat(editedPrice || 0).toFixed(2)}
               </h6>
             )}
           </div>

@@ -218,4 +218,134 @@ route.get("/all", async (req, res) => {
   }
 });
 
+route.patch("/all/:id", async (req, res) => {
+  const { id } = req.params;
+  const { product_name, description, category } = req.body;
+
+  // Ensure the id is provided
+  if (!id) {
+    return res.status(400).send("Product ID is required");
+  }
+
+  // Ensure at least one field is provided for update
+  if (!product_name && !description && !category) {
+    return res.status(400).send("At least one field is required for update");
+  }
+
+  // Construct a dynamic query to update only provided fields
+  let updateQuery = "UPDATE product_table SET ";
+  const queryParams = [];
+  let queryIndex = 1;
+
+  if (product_name) {
+    updateQuery += `product_name = $${queryIndex++}, `;
+    queryParams.push(product_name);
+  }
+  if (description) {
+    updateQuery += `description = $${queryIndex++}, `;
+    queryParams.push(description);
+  }
+  if (category) {
+    updateQuery += `category = $${queryIndex++}, `;
+    queryParams.push(category);
+  }
+
+  updateQuery = updateQuery.slice(0, -2);
+  updateQuery += ` WHERE product_id = $${queryIndex}`;
+  queryParams.push(id);
+
+  try {
+    const result = await db.query(updateQuery, queryParams);
+    if (result.rowCount === 0) {
+      return res.status(404).send("Product not found");
+    }
+
+    res.status(200).json({ message: "Product updated successfully" });
+  } catch (error) {
+    console.error("Error handling /all/:id patch request:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+route.post("/all", async (req, res) => {
+  const { product_name, description, category } = req.body;
+
+  if (!product_name || !description || !category) {
+    return res
+      .status(400)
+      .send("All fields are required: product_name, description, category");
+  }
+
+  try {
+    const result = await db.query(
+      "INSERT INTO product_table (product_name, description, category) VALUES ($1, $2, $3) RETURNING *",
+      [product_name, description, category]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error handling /all POST request:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+route.patch("/items/:item_id", async (req, res) => {
+  const { item_id } = req.params;
+  const { amount, price } = req.body;
+
+  try {
+    if (amount == null && price == null) {
+      return res
+        .status(400)
+        .json({ error: "At least one field (amount or price) is required" });
+    }
+
+    let query = "UPDATE item_table SET";
+    const values = [];
+    let index = 1;
+
+    if (amount != null) {
+      query += ` amount = $${index++},`;
+      values.push(amount);
+    }
+    if (price != null) {
+      query += ` price = $${index++},`;
+      values.push(price);
+    }
+
+    query = query.slice(0, -1) + ` WHERE item_id = $${index}`;
+    values.push(item_id);
+
+    await db.query(query, values);
+
+    res.status(200).json({ message: "Item updated successfully" });
+  } catch (error) {
+    console.error("Error updating item:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+route.delete("/product/:product_id", async (req, res) => {
+  const { product_id } = req.params;
+
+  try {
+    await db.query("BEGIN");
+    await db.query("DELETE FROM item_table WHERE product_id = $1", [
+      product_id,
+    ]);
+    await db.query("DELETE FROM product_table WHERE product_id = $1", [
+      product_id,
+    ]);
+    await db.query("COMMIT");
+
+    res
+      .status(200)
+      .json({ message: "Product and associated items deleted successfully" });
+  } catch (error) {
+    await db.query("ROLLBACK");
+    console.error("Error deleting product:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 export default route;
