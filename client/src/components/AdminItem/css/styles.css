@@ -12,20 +12,6 @@
   position: absolute;
 }
 
-/* Image */
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  border-radius: 0.75rem;
-  overflow: hidden;
-}
-
-.img-fluid:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-}
-
 /* Category and Product Name */
 .text-muted {
   color: #6c757d;
@@ -199,8 +185,4 @@ hr.my-4 {
   height: 1px;
   background: linear-gradient(to right, #dee2e6, #007bff);
   transition: background 0.4s ease;
-}
-
-hr.my-4:hover {
-  background: linear-gradient(to right, #007bff, #dee2e6);
 }

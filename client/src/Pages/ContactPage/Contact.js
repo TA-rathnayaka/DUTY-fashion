@@ -72,7 +72,7 @@ function Contact() {
                   <div className="form-outline mb-4">
                     <textarea
                       id="form3Example4"
-                      className="form-control"
+                      className="form-control "
                       rows="4"
                     ></textarea>
                     <label

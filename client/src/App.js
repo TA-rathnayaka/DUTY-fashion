@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./components/Navbar/Navbar";
-import HomePageContent from "./Pages/HomePageContent";
+import HomePageContent from "./Pages/HomePageContent/HomePageContent";
 import About from "./Pages/About";
 import Stock from "./Pages/Stock";
 import Signup from "./Pages/Signup";

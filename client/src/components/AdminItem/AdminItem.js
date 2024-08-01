@@ -110,6 +110,7 @@ function AdminItem({ item, onDelete, onEdit }) {
         )}
         {isEditing ? (
           <textarea
+            id={`admin-text-area-${item.product_id}`}
             value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
             className="form-control my-3"
@@ -160,6 +161,7 @@ function AdminItem({ item, onDelete, onEdit }) {
               style={{ fontSize: "0.875rem" }}
             />
             <button
+              id={`amount-${item.product_id}`}
               className="btn btn-link px-2"
               onClick={() => setEditedAmount(editedAmount + 1)}
               disabled={!isEditing}
@@ -171,6 +173,7 @@ function AdminItem({ item, onDelete, onEdit }) {
           <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
             {isEditing ? (
               <input
+                id={`price-${item.product_id}`}
                 type="number"
                 value={editedPrice}
                 min="0"

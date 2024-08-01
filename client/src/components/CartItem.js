@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSave,
+  faEdit,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 
 function CartItem({ item, onDelete, onEdit, setTotalPrice }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -95,11 +101,11 @@ function CartItem({ item, onDelete, onEdit, setTotalPrice }) {
         <div className="d-flex justify-content-between align-items-center">
           {isEditing ? (
             <button
-              className="btn btn-sm btn-primary"
+              className="btn btn-sm "
               onClick={handleSave}
               style={{ fontSize: "0.75rem" }} // Match font size with other pages
             >
-              Save
+              <FontAwesomeIcon icon={faSave} />
             </button>
           ) : (
             <button
