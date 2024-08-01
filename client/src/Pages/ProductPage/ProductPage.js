@@ -3,6 +3,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./css/ProductPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function ProductPage() {
   const { id } = useParams();
@@ -169,7 +171,7 @@ function ProductPage() {
                   fontSize: "0.875rem", // Match font size with other pages
                 }}
               >
-                -
+                <FontAwesomeIcon icon={faMinus} />
               </button>
               <span
                 className="quantity-display"
@@ -185,7 +187,7 @@ function ProductPage() {
                   fontSize: "0.875rem", // Match font size with other pages
                 }}
               >
-                +
+                <FontAwesomeIcon icon={faPlus} />
               </button>
             </div>
 

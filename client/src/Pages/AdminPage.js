@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AdminItem from "../components/AdminItem";
+import AdminItem from "../components/AdminItem/AdminItem";
 
 import axios from "axios";
 
@@ -35,7 +35,10 @@ function AdminPage() {
     }
   };
 
-  const onEdit = async (id, editedItem) => {
+  const onEdit = async (product_id, item_id, editedItem) => {
+    console.log(editedItem);
+    console.log(product_id);
+    console.log(item_id);
     // try {
     //   const response = await axios.patch(`/cart/${id}`, editedItem, {
     //     headers: { "Content-Type": "application/json" },
