@@ -1,0 +1,88 @@
+/* Container Styling */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Custom Input and Textarea Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+[id^="amount-"],
+[id^="price-"],
+[id^="quantity-"],
+[id^="form3Example"],
+[id^="admin-text-area-"],
+.form-control {
+  text-align: center;
+  background-color: #f1f3f5; /* Light gray background color for visibility */
+  color: #495057; /* Text color */
+  border: none !important; /* No border */
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  box-shadow: none !important; /* No shadow */
+  transition: background-color 0.4s ease, color 0.4s ease; /* Transition for background color and text color */
+  outline: none !important; /* Remove default outline */
+  resize: vertical; /* Allow vertical resizing for textareas */
+  caret-color: #007bff; /* Custom color for the blinking cursor */
+}
+
+/* Ensure background color change on focus */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+[id^="amount-"]:focus,
+[id^="price-"]:focus,
+[id^="quantity-"]:focus,
+[id^="form3Example"]:focus,
+[id^="admin-text-area-"]:focus,
+.form-control:focus {
+  background-color: #e2e6ea; /* Slightly darker background on focus */
+  color: #212529; /* Text color on focus */
+  outline: none !important; /* Remove any outline */
+  border: none !important; /* Ensure no border */
+  box-shadow: none !important; /* Ensure no shadow */
+}
+
+/* Placeholder Styling */
+input::placeholder,
+textarea::placeholder {
+  color: #6c757d; /* Light gray color for placeholders */
+  opacity: 1; /* Ensure placeholder text is fully opaque */
+}
+
+/* Additional Styling for Textarea Specifics */
+textarea {
+  min-height: 100px; /* Set a minimum height for text areas */
+  padding: 0.75rem; /* Consistent padding */
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Hover Effects */
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="number"]:hover,
+textarea:hover,
+.form-control:hover {
+  background-color: #f8f9fa; /* Slightly lighter background on hover */
+}
+
+/* Focus Effects */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+.form-control:focus {
+  background-color: #e2e6ea; /* Slightly darker background on focus */
+  color: #212529; /* Darker text color on focus */
+  outline: none !important; /* Remove any outline */
+  border: none !important; /* Ensure no border */
+  box-shadow: none !important; /* Ensure no shadow */
+}
