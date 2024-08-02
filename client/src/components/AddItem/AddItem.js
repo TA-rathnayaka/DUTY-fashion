@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import "./css/styles.css";
 
-const predefinedSizes = ["S", "M", "L", "XL", "XXL"];
+const predefinedSizes = ["S", "M", "L", "XL"];
 
 function AddItem({ onAdd }) {
   const [itemName, setItemName] = useState("");
@@ -47,14 +47,14 @@ function AddItem({ onAdd }) {
         prices: sizes.map((size) => size.price),
       };
       onAdd(newItem);
-      setItemName("");
-      setCategory("");
-      setDescription("");
-      setGender("");
-      setImage(
-        "https://seetruetechnology.com/wp-content/uploads/2022/02/BG-7.jpg"
-      );
-      setSizes([]);
+      // setItemName("");
+      // setCategory("");
+      // setDescription("");
+      // setGender("");
+      // setImage(
+      //   "https://seetruetechnology.com/wp-content/uploads/2022/02/BG-7.jpg"
+      // );
+      // setSizes([]);
     }
   };
 

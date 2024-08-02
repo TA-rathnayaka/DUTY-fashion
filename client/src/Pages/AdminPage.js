@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import AdminItem from "../components/AdminItem/AdminItem";
 import AddItem from "../components/AddItem/AddItem";
-
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 function AdminPage() {
   const [AdminData, setAdminData] = useState([]);
+  const [showAddItem, setShowAddItem] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -36,9 +38,68 @@ function AdminPage() {
     }
   };
 
-  const onEdit = async (product_id, item_ids, editedItem) => {
-    console.log("start");
+  const onAdd = async (newItem) => {
+    const {
+      product_name,
+      category,
+      description,
+      gender,
+      sizes,
+      amounts,
+      prices,
+    } = newItem;
 
+    try {
+      const productResponse = await axios.post(
+        "/all",
+        {
+          product_name: product_name,
+          category: category,
+          description: description,
+          gender: gender,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const productId = productResponse.data.product_id;
+
+      const itemRequests = sizes.map((size, index) => {
+        return axios.post(
+          "/items",
+          {
+            product_id: productId,
+            size: size,
+            amount: amounts[index],
+            price: prices[index],
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      });
+
+      const itemResponses = await Promise.all(itemRequests);
+
+      const item_ids = itemResponses.map((response) => response.data.item_id);
+
+      const productWithItems = {
+        ...productResponse.data,
+        sizes: sizes,
+        amounts: amounts,
+        prices: prices,
+        item_ids: item_ids,
+      };
+
+      setAdminData((prevData) => [...prevData, productWithItems]);
+      setShowAddItem(false);
+    } catch (error) {
+      console.error("Error adding new item:", error);
+    }
+  };
+
+  const onEdit = async (product_id, item_ids, editedItem) => {
     const updatedProductDetails = {};
     if (editedItem.product_name) {
       updatedProductDetails.product_name = editedItem.product_name;
@@ -127,6 +188,14 @@ function AdminPage() {
                     <div className="p-5">
                       <div className="d-flex justify-content-between align-items-center mb-5">
                         <h5 className="mb-0">All Products</h5>
+                        <button
+                          className="btn btn-sm btn-outline-dark"
+                          onClick={() => setShowAddItem(!showAddItem)}
+                        >
+                          <FontAwesomeIcon
+                            icon={showAddItem ? faMinus : faPlus}
+                          />
+                        </button>
                         <h6 className="mb-0 text-muted">
                           {AdminData.length} items
                         </h6>
@@ -134,7 +203,7 @@ function AdminPage() {
                       <hr className="my-4" />
 
                       <div className="row mb-4 d-flex justify-content-between align-items-center">
-                        <AddItem />
+                        {showAddItem && <AddItem onAdd={onAdd} />}
                         {AdminData.map((item) => (
                           <AdminItem
                             key={item.item_id}

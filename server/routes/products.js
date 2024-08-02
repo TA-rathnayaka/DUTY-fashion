@@ -268,23 +268,47 @@ route.patch("/all/:id", async (req, res) => {
 });
 
 route.post("/all", async (req, res) => {
-  const { product_name, description, category } = req.body;
+  const { product_name, description, category, gender } = req.body;
 
-  if (!product_name || !description || !category) {
+  if (!product_name || !description || !category || !gender) {
     return res
       .status(400)
-      .send("All fields are required: product_name, description, category");
+      .send(
+        "All fields are required: product_name, description, category, category"
+      );
   }
 
   try {
     const result = await db.query(
-      "INSERT INTO product_table (product_name, description, category) VALUES ($1, $2, $3) RETURNING *",
-      [product_name, description, category]
+      "INSERT INTO product_table (product_name, description, category, gender) VALUES ($1, $2, $3, $4) RETURNING *",
+      [product_name, description, category, gender]
     );
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error("Error handling /all POST request:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+route.post("/items", async (req, res) => {
+  const { product_id, size, amount, price } = req.body;
+
+  if (!product_id || !size || amount == null || price == null) {
+    return res.status(400).json({
+      error: "All fields are required: product_id, size, amount, price",
+    });
+  }
+
+  try {
+    const result = await db.query(
+      "INSERT INTO item_table (product_id, size, amount, price) VALUES ($1, $2, $3, $4) RETURNING *",
+      [product_id, size, amount, price]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error handling /items POST request:", error);
     res.status(500).send("Internal Server Error");
   }
 });
