@@ -8,6 +8,7 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import "./css/styles.css";
+import placeholder from "./images/placeholder.webp";
 
 function AdminItem({ item, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -17,6 +18,8 @@ function AdminItem({ item, onDelete, onEdit }) {
   const [selectedSize, setSelectedSize] = useState(null);
   const [editedAmount, setEditedAmount] = useState(0);
   const [editedPrice, setEditedPrice] = useState(0);
+  const [imagePreview, setImagePreview] = useState(item.image_url || ""); // Handle image preview
+  const [imageFile, setImageFile] = useState(null); // Store the uploaded file
 
   const sizes = item.sizes.map((size, index) => ({
     size,
@@ -53,6 +56,10 @@ function AdminItem({ item, onDelete, onEdit }) {
       updatedData.description = editedDescription;
     }
 
+    if (imageFile) {
+      updatedData.imageFile = imageFile;
+    }
+
     const updatedSizes = sizes.map((curr) => {
       if (curr.size === selectedSize) {
         return { ...curr, amount: editedAmount, price: editedPrice };
@@ -80,6 +87,14 @@ function AdminItem({ item, onDelete, onEdit }) {
     onDelete(item.product_id);
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file)); // Preview the uploaded image
+    }
+  };
+
   return (
     <div
       className="row align-items-center position-relative"
@@ -87,11 +102,19 @@ function AdminItem({ item, onDelete, onEdit }) {
     >
       <div className="col-md-2 col-lg-2 col-xl-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
+          src={imagePreview || placeholder}
           className="img-fluid rounded-3"
           alt={editedName}
           style={{ maxWidth: "100%", height: "auto" }}
         />
+        {isEditing && (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="form-control my-3"
+          />
+        )}
       </div>
       <div className="col-md-3 col-lg-3 col-xl-3">
         {isEditing ? (
@@ -239,7 +262,6 @@ function AdminItem({ item, onDelete, onEdit }) {
           </button>
         </div>
       </div>
-      <hr className="my-4" />
     </div>
   );
 }

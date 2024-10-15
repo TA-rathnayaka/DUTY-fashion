@@ -24,6 +24,7 @@ function AdminPage() {
             prices: [],
             amounts: [],
             item_ids: [],
+            image_url: item.image_url, // Add image_url
           };
         }
         acc[item.product_id].sizes.push(item.size);
@@ -47,21 +48,24 @@ function AdminPage() {
       sizes,
       amounts,
       prices,
+      image,
     } = newItem;
 
+    const formData = new FormData();
+    formData.append("product_name", product_name);
+    formData.append("category", category);
+    formData.append("description", description);
+    formData.append("gender", gender);
+    if (image) {
+      formData.append("image", image);
+    }
+
     try {
-      const productResponse = await axios.post(
-        "/all",
-        {
-          product_name: product_name,
-          category: category,
-          description: description,
-          gender: gender,
+      const productResponse = await axios.post("/all", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      });
 
       const productId = productResponse.data.product_id;
 
@@ -100,21 +104,28 @@ function AdminPage() {
   };
 
   const onEdit = async (product_id, item_ids, editedItem) => {
-    const updatedProductDetails = {};
+    const updatedProductDetails = new FormData(); // Using FormData for editing as well
     if (editedItem.product_name) {
-      updatedProductDetails.product_name = editedItem.product_name;
+      updatedProductDetails.append("product_name", editedItem.product_name);
     }
     if (editedItem.description) {
-      updatedProductDetails.description = editedItem.description;
+      updatedProductDetails.append("description", editedItem.description);
+    }
+    if (editedItem.image) {
+      updatedProductDetails.append("image", editedItem.image); // Image file update
     }
 
     try {
-      if (Object.keys(updatedProductDetails).length > 0) {
+      if (
+        updatedProductDetails.has("product_name") ||
+        updatedProductDetails.has("description") ||
+        updatedProductDetails.has("image")
+      ) {
         const response = await axios.patch(
           `/all/${product_id}`,
           updatedProductDetails,
           {
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "multipart/form-data" }, // Adjust for file uploads
           }
         );
         console.log("Product details updated:", response.data);

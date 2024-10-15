@@ -8,8 +8,9 @@ import {
   faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import "./css/styles.css";
+import placeholder from "./images/placeholder.webp";
 
-function CartItem({ item, onDelete, onEdit, setTotalPrice }) {
+function CartItem({ item, onDelete, onEdit, setTotalPrice, imageUrl }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedAmount, setEditedAmount] = useState(item.wanted_amount);
 
@@ -34,7 +35,7 @@ function CartItem({ item, onDelete, onEdit, setTotalPrice }) {
     <div className="row align-items-center" style={{ marginBottom: "1rem" }}>
       <div className="col-md-2 col-lg-2 col-xl-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
+          src={imageUrl || placeholder} // Fallback to default image if no imageUrl provided
           className="img-fluid rounded-3"
           alt={item.product_name}
           style={{ maxWidth: "100%", height: "auto" }} // Maintain aspect ratio

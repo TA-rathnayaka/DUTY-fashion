@@ -23,9 +23,7 @@ function ListOfProducts() {
           {backEndData.map((item) => {
             return (
               <ProductItem
-                img={
-                  "https://static.cotondoux.com/media/product/large/2022/01/11098/34363.jpg"
-                }
+                img={""}
                 item={item}
                 categoryColor={"#FFFFFF"}
                 productPrice={item.price}

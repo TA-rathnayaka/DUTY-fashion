@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./css/ProductPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import placeholder from "./images/placeholder.webp";
 
 function ProductPage() {
   const { id } = useParams();
@@ -15,10 +16,14 @@ function ProductPage() {
   const navigate = useNavigate();
 
   const fetchData = async () => {
-    const response = await axios.get(`/all/${id}`);
-    setAllItems(response.data);
-    setItem(response.data[0]);
-    setSelectedSize(response.data[0].size);
+    try {
+      const response = await axios.get(`/all/${id}`);
+      setAllItems(response.data);
+      setItem(response.data[0]);
+      setSelectedSize(response.data[0].size);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -34,11 +39,10 @@ function ProductPage() {
       });
       console.log("Response:", response);
     } catch (error) {
-      // Redirect to login page if there's an authentication error
       if (error.response && error.response.status === 401) {
         navigate("/login");
       } else {
-        console.log("Error:", error);
+        console.error("Error:", error);
       }
     }
   };
@@ -73,9 +77,13 @@ function ProductPage() {
       <div className="row">
         <div className="col-md-6 mb-4">
           <img
-            src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg"
-            className="img-fluid"
+            src={item.image_url || placeholder} // Dynamically set image URL
+            className="img-fluid rounded-3"
             alt={item.name}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = placeholder; // Fallback to placeholder if image fails to load
+            }}
             style={{ maxWidth: "100%", height: "auto" }} // Maintain aspect ratio
           />
         </div>

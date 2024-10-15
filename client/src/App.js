@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import HomePageContent from "./Pages/HomePageContent/HomePageContent";
 import About from "./Pages/About";
@@ -12,15 +12,35 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Contact from "./Pages/ContactPage/Contact";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import AdminPage from "./Pages/AdminPage";
+import { faAddressBook, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 function App() {
+  const [logged, setLogged] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get("/status");
+        setLogged(response.data.success);
+        setIsAdmin(response.data.success);
+      } catch (error) {
+        console.error("Authentication check failed:", error);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
+
   return (
     <BrowserRouter>
       <Navbar
-        logged={false}
+        logged={logged}
+        isAdmin={isAdmin}
         items={[
-          { name: "Contact", route: "/contact" },
-          { name: "About", route: "/about" },
+          { icon: { icon: faAddressBook }, path: "/contact" },
+          { icon: { icon: faInfoCircle }, path: "/about" },
         ]}
       />
       <Routes>

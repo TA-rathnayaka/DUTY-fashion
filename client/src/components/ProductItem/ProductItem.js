@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Styles/ProductItem.css";
+import placeholder from "./images/placeholder.webp";
 
 function ProductItem({ img, categoryName, categoryColor, gender, item }) {
   return (
@@ -14,7 +15,11 @@ function ProductItem({ img, categoryName, categoryColor, gender, item }) {
           }
           className="product-link"
         >
-          <img src={img} className="product-img w-100" alt="Product" />
+          <img
+            src={img || placeholder}
+            className="product-img w-100"
+            alt="Product"
+          />
           <div className="overlay">
             <div className="overlay-content" style={{ color: categoryColor }}>
               {item ? item.product_name : categoryName}

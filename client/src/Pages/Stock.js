@@ -30,9 +30,7 @@ function Stock() {
           {backEndData.map((element) => {
             return (
               <ProductItem
-                img={
-                  "https://static.cotondoux.com/media/product/large/2022/01/11098/34363.jpg"
-                }
+                img={""}
                 categoryName={element.category}
                 categoryColor={"#FFFFFF"}
                 gender={gender}

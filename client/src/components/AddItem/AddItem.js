@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
 import "./css/styles.css";
+import placeholder from "./images/placeholder.webp";
 
 const predefinedSizes = ["S", "M", "L", "XL"];
 
@@ -9,9 +10,7 @@ function AddItem({ onAdd }) {
   const [itemName, setItemName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(
-    "https://seetruetechnology.com/wp-content/uploads/2022/02/BG-7.jpg"
-  );
+  const [image, setImage] = useState(placeholder);
   const [selectedSize, setSelectedSize] = useState("");
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
@@ -47,14 +46,6 @@ function AddItem({ onAdd }) {
         prices: sizes.map((size) => size.price),
       };
       onAdd(newItem);
-      // setItemName("");
-      // setCategory("");
-      // setDescription("");
-      // setGender("");
-      // setImage(
-      //   "https://seetruetechnology.com/wp-content/uploads/2022/02/BG-7.jpg"
-      // );
-      // setSizes([]);
     }
   };
 
@@ -241,9 +232,7 @@ function AddItem({ onAdd }) {
               setCategory("");
               setDescription("");
               setGender("");
-              setImage(
-                "https://seetruetechnology.com/wp-content/uploads/2022/02/BG-7.jpg"
-              );
+              setImage();
               setSelectedSize("");
               setAmount(0);
               setPrice(0);
