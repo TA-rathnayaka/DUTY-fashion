@@ -15,7 +15,6 @@ function Stock() {
         gender: gender,
       },
     });
-    console.log(response.data);
     setBackEndData(response.data);
   };
   useEffect(() => {
@@ -30,7 +29,7 @@ function Stock() {
           {backEndData.map((element) => {
             return (
               <ProductItem
-                img={""}
+                img={element.image_url}
                 categoryName={element.category}
                 categoryColor={"#FFFFFF"}
                 gender={gender}

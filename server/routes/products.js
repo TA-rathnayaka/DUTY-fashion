@@ -9,20 +9,32 @@ route.get("/data", async (req, res) => {
       let result = {};
       if (gender) {
         result = await db.query(
-          "SELECT DISTINCT(category) FROM product_table WHERE UPPER(gender)=UPPER($1)",
+          `SELECT pt.category, pi.image_url
+           FROM product_table pt
+           LEFT JOIN product_image pi ON pt.product_id = pi.product_id AND pi.is_primary = TRUE
+           WHERE UPPER(pt.gender) = UPPER($1)
+           GROUP BY pt.category, pi.image_url`,
           [gender]
         );
       } else {
-        result = await db.query("SELECT DISTINCT(category) FROM product_table");
+        result = await db.query(
+          `SELECT pt.category, pi.image_url
+           FROM product_table pt
+           LEFT JOIN product_image pi ON pt.product_id = pi.product_id AND pi.is_primary = TRUE
+           GROUP BY pt.category, pi.image_url`
+        );
       }
+
       return res.json(result.rows);
     }
+
     res.status(400).send("Invalid request type");
   } catch (error) {
-    console.error("Error handling /stock request:", error);
+    console.error("Error handling /data request:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+
 route.get("/all/:gender/:category", async (req, res) => {
   const { gender, category } = req.params;
   try {
