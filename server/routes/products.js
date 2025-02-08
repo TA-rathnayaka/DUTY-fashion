@@ -7,21 +7,28 @@ route.get("/data", async (req, res) => {
     if (req.query.type === "categories") {
       const gender = req.query.gender;
       let result = {};
+
       if (gender) {
         result = await db.query(
-          `SELECT pt.category, pi.image_url
+          `SELECT DISTINCT ON (pt.category) 
+              pt.category, 
+              pi.image_url
            FROM product_table pt
-           LEFT JOIN product_image pi ON pt.product_id = pi.product_id AND pi.is_primary = TRUE
+           LEFT JOIN product_image pi 
+              ON pt.product_id = pi.product_id AND pi.is_primary = TRUE
            WHERE UPPER(pt.gender) = UPPER($1)
-           GROUP BY pt.category, pi.image_url`,
+           ORDER BY pt.category, pi.image_id`,
           [gender]
         );
       } else {
         result = await db.query(
-          `SELECT pt.category, pi.image_url
+          `SELECT DISTINCT ON (pt.category) 
+              pt.category, 
+              pi.image_url
            FROM product_table pt
-           LEFT JOIN product_image pi ON pt.product_id = pi.product_id AND pi.is_primary = TRUE
-           GROUP BY pt.category, pi.image_url`
+           LEFT JOIN product_image pi 
+              ON pt.product_id = pi.product_id AND pi.is_primary = TRUE
+           ORDER BY pt.category, pi.image_id`
         );
       }
 
@@ -37,96 +44,114 @@ route.get("/data", async (req, res) => {
 
 route.get("/all/:gender/:category", async (req, res) => {
   const { gender, category } = req.params;
+
   try {
     const result = await db.query(
       `WITH min_price_items AS (
-    SELECT
-        p.product_id,
-        p.product_name,
-        p.description,
-        p.gender,
-        p.category,
-        i.item_id,
-        i.size,
-        i.amount,
-        i.price,
-        MIN(i.price) OVER (PARTITION BY i.product_id) AS min_price
-    FROM
-        product_table p
-    INNER JOIN
-        item_table i
-    ON
-        p.product_id = i.product_id
-    WHERE
-        UPPER(p.gender) = UPPER($1)
-        AND UPPER(p.category) = UPPER($2)
-),
-same_price_check AS (
-    SELECT
-        product_id,
-        MIN(price) AS min_price,
-        COUNT(DISTINCT price) AS price_count
-    FROM
-        min_price_items
-    GROUP BY
-        product_id
-)
-SELECT
-    m.product_id,
-    m.product_name,
-    m.description,
-    m.gender,
-    m.category,
-    m.item_id,
-    m.size,
-    m.amount,
-    m.price
-FROM
-    min_price_items m
-JOIN
-    same_price_check s
-ON
-    m.product_id = s.product_id
-WHERE
-    m.price = s.min_price
-    AND (s.price_count > 1 OR m.size = 'S')
-`,
+        SELECT
+            p.product_id,
+            p.product_name,
+            p.description,
+            p.gender,
+            p.category,
+            i.item_id,
+            i.size,
+            i.amount,
+            i.price,
+            MIN(i.price) OVER (PARTITION BY p.product_id) AS min_price
+        FROM
+            product_table p
+        INNER JOIN
+            item_table i ON p.product_id = i.product_id
+        WHERE
+            UPPER(p.gender) = UPPER($1)
+            AND UPPER(p.category) = UPPER($2)
+      )
+      SELECT DISTINCT ON (m.product_id) 
+          m.product_id,
+          m.product_name,
+          m.description,
+          m.gender,
+          m.category,
+          m.item_id,
+          m.size,
+          m.amount,
+          m.price,
+          pi.image_url
+      FROM
+          min_price_items m
+      LEFT JOIN
+          product_image pi ON m.product_id = pi.product_id AND pi.is_primary = TRUE
+      WHERE
+          m.price = m.min_price
+      ORDER BY
+          m.product_id, m.price; 
+      `,
       [gender, category]
     );
 
-    res.json(result.rows);
+    res.status(200).json(result.rows);
   } catch (error) {
-    console.error("Error handling /collection request:", error);
-    res.status(500).send("Internal Server Error");
+    console.error("Error retrieving products:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
 route.get("/all/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
     const result = await db.query(
-      "SELECT * FROM product_table INNER JOIN item_table ON product_table.product_id = item_table.product_id WHERE product_table.product_id=$1",
+      `SELECT 
+         p.product_id, 
+         p.product_name, 
+         p.description, 
+         p.gender, 
+         p.category, 
+         i.item_id, 
+         i.size, 
+         i.amount, 
+         i.price, 
+         pi.image_url, 
+         pi.is_primary
+       FROM 
+         product_table p
+       INNER JOIN 
+         item_table i 
+       ON 
+         p.product_id = i.product_id
+       LEFT JOIN 
+         product_image pi 
+       ON 
+         p.product_id = pi.product_id
+       WHERE 
+         p.product_id = $1`,
       [id]
     );
     res.json(result.rows);
   } catch (error) {
-    console.error("Error handling /collection request:", error);
+    console.error("Error handling /all/:id request:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
 route.get("/cart", async (req, res) => {
-  if (!req.user) return res.status(401).send("user is not authenticated");
+  if (!req.user) return res.status(401).send("User is not authenticated");
 
   const id = req.user.user_id;
   try {
     const result = await db.query(
-      "SELECT * FROM user_product INNER JOIN item_table ON item_table.item_id = user_product.item_id INNER JOIN product_table ON product_table.product_id = item_table.product_id WHERE user_product.user_id = $1;",
+      `SELECT up.*, it.*, pt.*, pi.image_url
+       FROM user_product up
+       INNER JOIN item_table it ON it.item_id = up.item_id
+       INNER JOIN product_table pt ON pt.product_id = it.product_id
+       LEFT JOIN product_image pi ON pt.product_id = pi.product_id AND pi.is_primary = TRUE
+       WHERE up.user_id = $1;`,
       [id]
     );
     res.json(result.rows);
   } catch (error) {
-    console.error("Error handling /collection request:", error);
+    console.error("Error handling /cart request:", error);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -215,17 +240,18 @@ route.delete("/cart/:item_id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
 route.get("/all", async (req, res) => {
   try {
     const response = await db.query(
-      "SELECT * FROM product_table INNER JOIN item_table ON product_table.product_id = item_table.product_id"
+      `SELECT pt.*, it.*, pi.image_url
+       FROM product_table pt
+       INNER JOIN item_table it ON pt.product_id = it.product_id
+       LEFT JOIN product_image pi ON pt.product_id = pi.product_id AND pi.is_primary = TRUE`
     );
 
     res.status(200).json(response.rows);
   } catch (error) {
-    console.error("Error fetching products and items:", error);
-
+    console.error("Error fetching products and items with images:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -325,6 +351,28 @@ route.post("/items", async (req, res) => {
   }
 });
 
+route.post("/images", async (req, res) => {
+  const { product_id, image_url, is_primary } = req.body;
+
+  if (!product_id || !image_url) {
+    return res.status(400).json({
+      error: "All fields are required: product_id, image_url",
+    });
+  }
+
+  try {
+    const result = await db.query(
+      "INSERT INTO product_image (product_id, image_url, is_primary) VALUES ($1, $2, $3) RETURNING *",
+      [product_id, image_url, is_primary]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error handling /images POST request:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 route.patch("/items/:item_id", async (req, res) => {
   const { item_id } = req.params;
   const { amount, price } = req.body;
@@ -366,17 +414,24 @@ route.delete("/product/:product_id", async (req, res) => {
 
   try {
     await db.query("BEGIN");
+
+    await db.query("DELETE FROM product_image WHERE product_id = $1", [
+      product_id,
+    ]);
+
     await db.query("DELETE FROM item_table WHERE product_id = $1", [
       product_id,
     ]);
+
     await db.query("DELETE FROM product_table WHERE product_id = $1", [
       product_id,
     ]);
+
     await db.query("COMMIT");
 
-    res
-      .status(200)
-      .json({ message: "Product and associated items deleted successfully" });
+    res.status(200).json({
+      message: "Product, associated items, and images deleted successfully",
+    });
   } catch (error) {
     await db.query("ROLLBACK");
     console.error("Error deleting product:", error);

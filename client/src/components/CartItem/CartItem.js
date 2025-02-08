@@ -10,7 +10,7 @@ import {
 import "./css/styles.css";
 import placeholder from "./images/placeholder.webp";
 
-function CartItem({ item, onDelete, onEdit, setTotalPrice, imageUrl }) {
+function CartItem({ item, onDelete, onEdit, setTotalPrice }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedAmount, setEditedAmount] = useState(item.wanted_amount);
 
@@ -35,7 +35,7 @@ function CartItem({ item, onDelete, onEdit, setTotalPrice, imageUrl }) {
     <div className="row align-items-center" style={{ marginBottom: "1rem" }}>
       <div className="col-md-2 col-lg-2 col-xl-2">
         <img
-          src={imageUrl || placeholder} // Fallback to default image if no imageUrl provided
+          src={item.image_url || placeholder} // Fallback to default image if no imageUrl provided
           className="img-fluid rounded-3"
           alt={item.product_name}
           style={{ maxWidth: "100%", height: "auto" }} // Maintain aspect ratio

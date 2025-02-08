@@ -28,7 +28,18 @@ route.post("/login", passport.authenticate("local"), async (req, res) => {
 });
 
 route.get("/status", async (req, res) => {
-  res.status(200).json({ success: req.isAuthenticated() });
+  try {
+    if (req.isAuthenticated()) {
+      res.status(200).json({ success: true });
+    } else {
+      res
+        .status(200)
+        .json({ success: false, message: "User is not authenticated" });
+    }
+  } catch (error) {
+    console.error("Error in /status route:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 export default route;

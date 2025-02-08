@@ -4,7 +4,7 @@ import axios from "axios";
 import LoginCover from "../components/Login/LoginCover/LoginCover";
 import LoginSideCover from "../components/Login/LoginSideCover/LoginSideCover";
 
-function Login() {
+function Login({ updateLoginState }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -20,7 +20,9 @@ function Login() {
 
       if (response.status === 200) {
         setMessage("Sign in successful");
-        navigate(-1);
+        const isAdmin = response.data.isAdmin || false;
+        updateLoginState(true, isAdmin);
+        navigate("/", { replace: true });
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -42,7 +44,6 @@ function Login() {
             marginTop: "-100px",
             backdropFilter: "blur(30px)",
             backgroundColor: "#ffffffa0",
-
             borderRadius: "8px", // Rounded corners for the shadow container
           }}
         >
@@ -59,7 +60,7 @@ function Login() {
               <div className="col-lg-12">
                 <h2
                   style={{
-                    fontSize: "1.25rem", // h5 size
+                    fontSize: "1.25rem",
                     fontWeight: "normal",
                     marginBottom: "2rem",
                   }}
@@ -75,13 +76,13 @@ function Login() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       style={{
-                        fontSize: "0.875rem", // Smaller font size for input fields
+                        fontSize: "0.875rem",
                       }}
                     />
                     <label
                       className="form-label"
                       htmlFor="form3Example3"
-                      style={{ fontSize: "0.875rem" }} // Match font size with input
+                      style={{ fontSize: "0.875rem" }}
                     >
                       Email address
                     </label>
@@ -95,13 +96,13 @@ function Login() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       style={{
-                        fontSize: "0.875rem", // Smaller font size for input fields
+                        fontSize: "0.875rem",
                       }}
                     />
                     <label
                       className="form-label"
                       htmlFor="form3Example4"
-                      style={{ fontSize: "0.875rem" }} // Match font size with input
+                      style={{ fontSize: "0.875rem" }}
                     >
                       Password
                     </label>
@@ -109,7 +110,7 @@ function Login() {
                   {message && (
                     <div
                       className="alert alert-info mt-3"
-                      style={{ fontSize: "0.875rem" }} // Match font size with other text
+                      style={{ fontSize: "0.875rem" }}
                     >
                       {message}
                     </div>
@@ -120,7 +121,7 @@ function Login() {
                     data-mdb-ripple-init
                     className="btn btn-primary btn-block mb-4"
                     style={{
-                      fontSize: "0.875rem", // Smaller font size for button text
+                      fontSize: "0.875rem",
                     }}
                   >
                     Login

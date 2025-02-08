@@ -24,7 +24,7 @@ function AdminPage() {
             prices: [],
             amounts: [],
             item_ids: [],
-            image_url: item.image_url, // Add image_url
+            image_url: item.image_url,
           };
         }
         acc[item.product_id].sizes.push(item.size);
@@ -51,23 +51,35 @@ function AdminPage() {
       image,
     } = newItem;
 
-    const formData = new FormData();
-    formData.append("product_name", product_name);
-    formData.append("category", category);
-    formData.append("description", description);
-    formData.append("gender", gender);
-    if (image) {
-      formData.append("image", image);
-    }
-
     try {
-      const productResponse = await axios.post("/all", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const productResponse = await axios.post(
+        "/all",
+        {
+          product_name: product_name,
+          category: category,
+          description: description,
+          gender: gender,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const productId = productResponse.data.product_id;
+
+      await axios.post(
+        "/images",
+        {
+          product_id: productId,
+          image_url: image,
+          is_primary: true,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       const itemRequests = sizes.map((size, index) => {
         return axios.post(
@@ -104,30 +116,19 @@ function AdminPage() {
   };
 
   const onEdit = async (product_id, item_ids, editedItem) => {
-    const updatedProductDetails = new FormData(); // Using FormData for editing as well
-    if (editedItem.product_name) {
-      updatedProductDetails.append("product_name", editedItem.product_name);
-    }
-    if (editedItem.description) {
-      updatedProductDetails.append("description", editedItem.description);
-    }
-    if (editedItem.image) {
-      updatedProductDetails.append("image", editedItem.image); // Image file update
-    }
-
+    console.log(typeof editedItem);
     try {
-      if (
-        updatedProductDetails.has("product_name") ||
-        updatedProductDetails.has("description") ||
-        updatedProductDetails.has("image")
-      ) {
-        const response = await axios.patch(
-          `/all/${product_id}`,
-          updatedProductDetails,
-          {
-            headers: { "Content-Type": "multipart/form-data" }, // Adjust for file uploads
-          }
-        );
+      const hasProductName = editedItem.product_name !== undefined;
+      const hasDescription = editedItem.description !== undefined;
+      const hasImage = editedItem.image !== undefined;
+
+      if (hasProductName || hasDescription || hasImage) {
+        const response = await axios.patch(`/all/${product_id}`, editedItem, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
         console.log("Product details updated:", response.data);
       }
 
@@ -168,7 +169,6 @@ function AdminPage() {
   const onDelete = async (product_id) => {
     try {
       const response = await axios.delete(`/product/${product_id}`);
-      console.log(response.data.message);
       setAdminData((items) =>
         items.filter((item) => item.product_id !== product_id)
       );
@@ -217,7 +217,7 @@ function AdminPage() {
                         {showAddItem && <AddItem onAdd={onAdd} />}
                         {AdminData.map((item) => (
                           <AdminItem
-                            key={item.item_id}
+                            key={item.product_id}
                             item={item}
                             onEdit={onEdit}
                             onDelete={onDelete}

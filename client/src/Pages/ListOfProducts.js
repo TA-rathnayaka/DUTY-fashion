@@ -23,7 +23,7 @@ function ListOfProducts() {
           {backEndData.map((item) => {
             return (
               <ProductItem
-                img={""}
+                img={item.image_url}
                 item={item}
                 categoryColor={"#FFFFFF"}
                 productPrice={item.price}

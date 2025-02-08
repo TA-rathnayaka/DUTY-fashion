@@ -4,7 +4,7 @@ import SignUpCover from "../components/Signup/SignupCover/SignupCover";
 import SignUpSideCover from "../components/Signup/SignupSideCover/LoginSideCover";
 import axios from "axios";
 
-function Signup() {
+function Signup({ updateLoginState }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,6 +31,7 @@ function Signup() {
 
       if (response.status === 200) {
         setMessage("Signup successful");
+        updateLoginState(true, response.data.isAdmin || false);
         navigate(-1);
       }
     } catch (error) {

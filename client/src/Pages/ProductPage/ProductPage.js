@@ -13,14 +13,25 @@ function ProductPage() {
   const [allItems, setAllItems] = useState([]);
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
+  const [images, setImages] = useState([]);
   const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
       const response = await axios.get(`/all/${id}`);
+
+      // Filter the images for the first item (primary image group by product)
+      const filteredImages = response.data
+        .filter((item) => item.product_id === parseInt(id))
+        .map((item) => ({
+          image_url: item.image_url,
+          is_primary: item.is_primary,
+        }));
+      console.log(filteredImages);
       setAllItems(response.data);
       setItem(response.data[0]);
       setSelectedSize(response.data[0].size);
+      setImages(filteredImages); // Set the images to be displayed
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -76,30 +87,32 @@ function ProductPage() {
     >
       <div className="row">
         <div className="col-md-6 mb-4">
+          {/* Render the primary image (or a placeholder) */}
           <img
-            src={item.image_url || placeholder} // Dynamically set image URL
+            src={item.image_url || placeholder}
             className="img-fluid rounded-3"
             alt={item.name}
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = placeholder; // Fallback to placeholder if image fails to load
+              e.target.src = placeholder;
             }}
             style={{ maxWidth: "100%", height: "auto" }} // Maintain aspect ratio
           />
         </div>
+
         <div className="col-md-6 mb-4 pt-5">
           <div className="p-4">
             <div className="mb-3">
               <span
                 className="badge bg-dark me-1"
-                style={{ fontSize: "0.875rem" }} // Match font size with other pages
+                style={{ fontSize: "0.875rem" }}
               >
                 {item.category}
               </span>
               {item.amount === 0 && (
                 <span
                   className="badge bg-danger me-1"
-                  style={{ fontSize: "0.875rem" }} // Match font size with other pages
+                  style={{ fontSize: "0.875rem" }}
                 >
                   Out of stock
                 </span>
@@ -108,43 +121,25 @@ function ProductPage() {
 
             <h2
               style={{
-                fontSize: "1.5rem", // Adjust to match consistent font size
+                fontSize: "1.5rem",
                 fontWeight: "bold",
                 marginBottom: "1rem",
               }}
             >
               {item.name}
             </h2>
-            <p
-              className="lead price"
-              style={{ fontSize: "1.25rem" }} // Adjust to match consistent font size
-            >
+            <p className="lead price" style={{ fontSize: "1.25rem" }}>
               ${item.price}
             </p>
             <strong>
-              <p
-                style={{
-                  fontSize: "1.25rem", // Adjust to match consistent font size
-                  fontWeight: "bold",
-                }}
-              >
+              <p style={{ fontSize: "1.25rem", fontWeight: "bold" }}>
                 Description
               </p>
             </strong>
-            <p
-              style={{
-                fontSize: "0.875rem", // Match font size with other pages
-              }}
-            >
-              {item.description}
-            </p>
+            <p style={{ fontSize: "0.875rem" }}>{item.description}</p>
 
             <div className="mb-3">
-              <strong
-                style={{ fontSize: "0.875rem" }} // Match font size with other pages
-              >
-                Select Size:
-              </strong>
+              <strong style={{ fontSize: "0.875rem" }}>Select Size:</strong>
               <div className="btn-group d-flex mt-2 size-buttons">
                 {availableSizes.map((size) => (
                   <button
@@ -161,7 +156,7 @@ function ProductPage() {
                       setQuantity(1);
                     }}
                     style={{
-                      fontSize: "0.875rem", // Match font size with other pages
+                      fontSize: "0.875rem",
                     }}
                   >
                     {size}
@@ -176,14 +171,14 @@ function ProductPage() {
                 className="btn btn-quantity"
                 onClick={handleDecrease}
                 style={{
-                  fontSize: "0.875rem", // Match font size with other pages
+                  fontSize: "0.875rem",
                 }}
               >
                 <FontAwesomeIcon icon={faMinus} />
               </button>
               <span
                 className="quantity-display"
-                style={{ fontSize: "0.875rem" }} // Match font size with other pages
+                style={{ fontSize: "0.875rem" }}
               >
                 {quantity}
               </span>
@@ -192,7 +187,7 @@ function ProductPage() {
                 className="btn btn-quantity"
                 onClick={handleIncrease}
                 style={{
-                  fontSize: "0.875rem", // Match font size with other pages
+                  fontSize: "0.875rem",
                 }}
               >
                 <FontAwesomeIcon icon={faPlus} />
@@ -206,9 +201,7 @@ function ProductPage() {
               <button
                 className="btn btn-dark ms-1"
                 type="submit"
-                style={{
-                  fontSize: "0.875rem", // Match font size with other pages
-                }}
+                style={{ fontSize: "0.875rem" }}
               >
                 Add to cart
                 <i className="fas fa-shopping-cart ms-1"></i>

@@ -8,12 +8,13 @@ import Login from "./Pages/Login";
 import ListOfProducts from "./Pages/ListOfProducts";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 import CartItems from "./Pages/CartItemsPage/CartItems";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import Contact from "./Pages/ContactPage/Contact";
-import ProtectedRoutes from "./utils/ProtectedRoutes";
+import { ProtectedRoute } from "./utils/ProtectedRoute";
 import AdminPage from "./Pages/AdminPage";
-import { faAddressBook, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import AuthProvider from "./Providers/AuthProvider";
+import { faAddressBook, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [logged, setLogged] = useState(false);
@@ -24,44 +25,75 @@ function App() {
       try {
         const response = await axios.get("/status");
         setLogged(response.data.success);
-        setIsAdmin(response.data.success);
+        setIsAdmin(response.data.isAdmin);
       } catch (error) {
         console.error("Authentication check failed:", error);
+        setLogged(false);
+        setIsAdmin(false);
       }
     };
 
     checkAuthStatus();
   }, []);
 
+  const updateLoginState = (isLogged, isAdminStatus) => {
+    setLogged(isLogged);
+    setIsAdmin(isAdminStatus);
+  };
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <>
+          <Navbar
+            items={[
+              { icon: { icon: faAddressBook }, path: "/contact" },
+              { icon: { icon: faInfoCircle }, path: "/about" },
+            ]}
+          />
+          <Outlet />
+        </>
+      ),
+      children: [
+        { index: true, element: <HomePageContent /> },
+        { path: "about", element: <About /> },
+        {
+          path: "login",
+          element: <Login updateLoginState={updateLoginState} />,
+        },
+        {
+          path: "signup",
+          element: <Signup updateLoginState={updateLoginState} />,
+        },
+        { path: "contact", element: <Contact /> },
+        { path: "stock", element: <Stock /> },
+        {
+          path: "admin",
+          element: (
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "cart",
+          element: (
+            <ProtectedRoute>
+              <CartItems />
+            </ProtectedRoute>
+          ),
+        },
+        { path: "collection/:gender/:category", element: <ListOfProducts /> },
+        { path: "collection/:id", element: <ProductPage /> },
+      ],
+    },
+  ]);
+
   return (
-    <BrowserRouter>
-      <Navbar
-        logged={logged}
-        isAdmin={isAdmin}
-        items={[
-          { icon: { icon: faAddressBook }, path: "/contact" },
-          { icon: { icon: faInfoCircle }, path: "/about" },
-        ]}
-      />
-      <Routes>
-        <Route index element={<HomePageContent />} />
-        <Route path="/" element={<HomePageContent />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/stock" element={<Stock />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route element={<ProtectedRoutes />}>
-          <Route path="/cart" element={<CartItems />} />
-        </Route>
-        <Route
-          path="/collection/:gender/:category"
-          element={<ListOfProducts />}
-        />
-        <Route path="/collection/:id" element={<ProductPage />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider isSignedIn={logged} isAdmin={isAdmin}>
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
 }
 

@@ -11,6 +11,8 @@ function AddItem({ onAdd }) {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(placeholder);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageSource, setImageSource] = useState("url"); // New state for image source
   const [selectedSize, setSelectedSize] = useState("");
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
@@ -40,7 +42,7 @@ function AddItem({ onAdd }) {
         category,
         description,
         gender,
-        image,
+        image: imageSource === "url" ? imageUrl : image,
         sizes: sizes.map((size) => size.size),
         amounts: sizes.map((size) => size.amount),
         prices: sizes.map((size) => size.price),
@@ -55,6 +57,7 @@ function AddItem({ onAdd }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
+        setImageUrl("");
       };
       reader.readAsDataURL(file);
     }
@@ -67,17 +70,13 @@ function AddItem({ onAdd }) {
     >
       <div className="col-md-3 col-lg-3 col-xl-3 position-relative">
         <div className="image-container">
-          {image ? (
+          {imageSource === "upload" && image && (
             <img
               src={image}
               alt="Product"
               className="img-fluid rounded-3"
               style={{ maxWidth: "100%", height: "auto" }}
             />
-          ) : (
-            <div className="placeholder-image">
-              <FontAwesomeIcon icon={faPlus} size="2x" color="#ccc" />
-            </div>
           )}
           <input
             type="file"
@@ -99,7 +98,7 @@ function AddItem({ onAdd }) {
               color: "#fff",
               border: "none",
               opacity: "0",
-              zIndex: 1, // Ensure this button does not interfere with other elements
+              zIndex: 1,
             }}
             title="Add Image"
           >
@@ -132,6 +131,42 @@ function AddItem({ onAdd }) {
           rows="3"
           style={{ fontSize: "0.875rem", maxWidth: "90%" }}
         />
+
+        <div className="my-3">
+          <div className="custom-radio">
+            <input
+              type="radio"
+              id="upload"
+              value="upload"
+              checked={imageSource === "upload"}
+              onChange={() => setImageSource("upload")}
+            />
+            <label htmlFor="upload">Upload Image</label>
+          </div>
+          <div className="custom-radio">
+            <input
+              type="radio"
+              id="url"
+              value="url"
+              checked={imageSource === "url"}
+              onChange={() => setImageSource("url")}
+            />
+            <label htmlFor="url">Image URL</label>
+          </div>
+        </div>
+
+        {/* Conditional Rendering for Image URL Input */}
+        {imageSource === "url" && (
+          <input
+            type="text"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            placeholder="Enter Image URL"
+            className="form-control my-3"
+            style={{ fontSize: "0.875rem", maxWidth: "90%" }}
+          />
+        )}
+
         <select
           value={gender}
           onChange={(e) => setGender(e.target.value)}
@@ -232,7 +267,9 @@ function AddItem({ onAdd }) {
               setCategory("");
               setDescription("");
               setGender("");
-              setImage();
+              setImage(placeholder);
+              setImageUrl("");
+              setImageSource("url");
               setSelectedSize("");
               setAmount(0);
               setPrice(0);

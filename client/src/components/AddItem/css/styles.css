@@ -186,3 +186,52 @@ hr.my-4 {
   background: linear-gradient(to right, #dee2e6, #007bff);
   transition: background 0.4s ease;
 }
+
+/* Custom Radio Button Styles */
+.custom-radio {
+  position: relative;
+  display: inline-block;
+  margin-right: 15px; /* Space between radio buttons */
+}
+
+.custom-radio input[type="radio"] {
+  position: absolute;
+  opacity: 0; /* Hide the default radio button */
+}
+
+.custom-radio label {
+  cursor: pointer;
+  padding-left: 30px; /* Space for the custom radio */
+  position: relative;
+  font-size: 1rem; /* Adjust size as needed */
+  color: #343a40; /* Adjust color as needed */
+}
+
+.custom-radio label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px; /* Size of the custom radio */
+  height: 20px; /* Size of the custom radio */
+  border-radius: 50%;
+  border: 2px solid #343a40; /* Border color */
+  background-color: white; /* Background color */
+}
+
+.custom-radio input[type="radio"]:checked + label::before {
+  background-color: #343a40; /* Color when checked */
+}
+
+.custom-radio input[type="radio"]:checked + label::after {
+  content: "";
+  position: absolute;
+  left: 6px; /* Adjust position of inner dot */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px; /* Size of inner dot */
+  height: 8px; /* Size of inner dot */
+  border-radius: 50%;
+  background-color: white; /* Inner dot color */
+}
