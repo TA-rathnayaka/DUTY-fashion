@@ -3,39 +3,28 @@ import { useNavigate } from "react-router-dom";
 import SignUpCover from "../components/Signup/SignupCover/SignupCover";
 import SignUpSideCover from "../components/Signup/SignupSideCover/LoginSideCover";
 import axios from "axios";
+import { useAuth } from "../Providers/AuthProvider";
 
-function Signup({ updateLoginState }) {
+function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { signup } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const data = {
+    const { success, message } = await signup(
       firstName,
       lastName,
       email,
-      password,
-    };
-    console.log(data);
-    try {
-      const response = await axios.post("/signup", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        setMessage("Signup successful");
-        updateLoginState(true, response.data.isAdmin || false);
-        navigate(-1);
-      }
-    } catch (error) {
-      setMessage("There was an error signing up!", error);
+      password
+    );
+    setMessage(message);
+    if (success) {
+      navigate("/", { replace: true });
     }
   };
 

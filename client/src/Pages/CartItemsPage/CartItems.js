@@ -6,10 +6,22 @@ import axios from "axios";
 function CartItems() {
   const [cartData, setCartData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const fetchDate = async () => {
-    const response = await axios.get(`/cart`);
 
-    setCartData(response.data);
+  useEffect(() => {
+    const newTotal = cartData.reduce(
+      (acc, item) => acc + item.wanted_amount * parseFloat(item.price),
+      0
+    );
+    setTotalPrice(newTotal);
+  }, [cartData]);
+
+  const fetchDate = async () => {
+    try {
+      const response = await axios.get(`/cart`);
+      setCartData(response.data);
+    } catch (error) {
+      console.error("There was an error fetching data", error);
+    }
   };
 
   const onEdit = async (id, editedAmount) => {
@@ -23,6 +35,13 @@ function CartItems() {
       );
 
       if (response.status === 200) {
+        setCartData((prev) =>
+          prev.map((item) =>
+            item.item_id === id
+              ? { ...item, wanted_amount: editedAmount }
+              : item
+          )
+        );
         console.log("Successfully edited the cart item");
       } else {
         console.warn(`Unexpected response status: ${response.status}`);

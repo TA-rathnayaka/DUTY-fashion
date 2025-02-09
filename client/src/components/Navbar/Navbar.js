@@ -9,8 +9,12 @@ import {
   faUserPlus,
   faTachometerAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../Providers/AuthProvider";
 
-function Navbar({ items, logged, isAdmin }) {
+function Navbar({ items }) {
+  const { user } = useAuth();
+  const isAdmin = user?.isAdmin || false;
+  const logged = !!user;
   return (
     <nav className="navbar navbar-expand-lg fixed-top">
       <div className="container">

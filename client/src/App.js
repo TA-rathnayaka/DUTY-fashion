@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Navbar from "./components/Navbar/Navbar";
 import HomePageContent from "./Pages/HomePageContent/HomePageContent";
 import About from "./Pages/About";
@@ -12,35 +12,10 @@ import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import Contact from "./Pages/ContactPage/Contact";
 import { ProtectedRoute } from "./utils/ProtectedRoute";
 import AdminPage from "./Pages/AdminPage";
-import axios from "axios";
 import AuthProvider from "./Providers/AuthProvider";
 import { faAddressBook, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
-  const [logged, setLogged] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await axios.get("/status");
-        setLogged(response.data.success);
-        setIsAdmin(response.data.isAdmin);
-      } catch (error) {
-        console.error("Authentication check failed:", error);
-        setLogged(false);
-        setIsAdmin(false);
-      }
-    };
-
-    checkAuthStatus();
-  }, []);
-
-  const updateLoginState = (isLogged, isAdminStatus) => {
-    setLogged(isLogged);
-    setIsAdmin(isAdminStatus);
-  };
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -51,6 +26,8 @@ function App() {
               { icon: { icon: faAddressBook }, path: "/contact" },
               { icon: { icon: faInfoCircle }, path: "/about" },
             ]}
+            isAdmin={true}
+            logged={true}
           />
           <Outlet />
         </>
@@ -58,14 +35,8 @@ function App() {
       children: [
         { index: true, element: <HomePageContent /> },
         { path: "about", element: <About /> },
-        {
-          path: "login",
-          element: <Login updateLoginState={updateLoginState} />,
-        },
-        {
-          path: "signup",
-          element: <Signup updateLoginState={updateLoginState} />,
-        },
+        { path: "login", element: <Login /> },
+        { path: "signup", element: <Signup /> },
         { path: "contact", element: <Contact /> },
         { path: "stock", element: <Stock /> },
         {
@@ -91,7 +62,7 @@ function App() {
   ]);
 
   return (
-    <AuthProvider isSignedIn={logged} isAdmin={isAdmin}>
+    <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
   );

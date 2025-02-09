@@ -23,8 +23,26 @@ route.post("/signup", async (req, res, next) => {
     res.status(500).json("Failed to signup");
   }
 });
-route.post("/login", passport.authenticate("local"), async (req, res) => {
-  res.status(200).json("logged in successful");
+route.post("/login", passport.authenticate("local"), (req, res) => {
+  return res.status(200).json({ user_id: req.user.user_id, isAdmin: true });
+});
+
+route.post("/logout", async (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Logout failed", error: err });
+    }
+
+    req.session.destroy((err) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ message: "Failed to destroy session", error: err });
+      }
+      res.clearCookie("connect.sid");
+      return res.status(200).json({ message: "Logged out successfully" });
+    });
+  });
 });
 
 route.get("/status", async (req, res) => {
@@ -42,4 +60,11 @@ route.get("/status", async (req, res) => {
   }
 });
 
+route.get("/me", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.status(200).json({ user_id: req.user.user_id, isAdmin: true });
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+});
 export default route;

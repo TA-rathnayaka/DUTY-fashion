@@ -27,10 +27,6 @@ function CartItem({ item, onDelete, onEdit, setTotalPrice }) {
     onDelete(item.item_id);
   };
 
-  useEffect(() => {
-    setTotalPrice((prevPrice) => prevPrice + item.wanted_amount * item.price);
-  }, [editedAmount]);
-
   return (
     <div className="row align-items-center" style={{ marginBottom: "1rem" }}>
       <div className="col-md-2 col-lg-2 col-xl-2">

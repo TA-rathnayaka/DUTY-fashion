@@ -3,34 +3,21 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoginCover from "../components/Login/LoginCover/LoginCover";
 import LoginSideCover from "../components/Login/LoginSideCover/LoginSideCover";
+import { useAuth } from "../Providers/AuthProvider";
 
-function Login({ updateLoginState }) {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = { email, password };
-    try {
-      const response = await axios.post("/login", data, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (response.status === 200) {
-        setMessage("Sign in successful");
-        const isAdmin = response.data.isAdmin || false;
-        updateLoginState(true, isAdmin);
-        navigate("/", { replace: true });
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setMessage("Email already exists or invalid credentials");
-      } else {
-        setMessage("There was an error signing in. Please try again.");
-      }
-      console.error("There was an error signing in!", error);
+    const { success, message } = await login(email, password);
+    setMessage(message);
+    if (success) {
+      navigate("/", { replace: true });
     }
   };
 
