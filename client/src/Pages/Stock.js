@@ -15,18 +15,18 @@ function Stock() {
       const response = await axios.get("/data", {
         params: { type: "categories", gender: gender },
       });
-
-      console.log("API Response:", response.data); // Debugging log
-
-      setBackEndData(Array.isArray(response.data) ? response.data : []);
-      setError(null); // Reset error if request succeeds
+      if (Array.isArray(response.data)) {
+        setBackEndData(response.data);
+      } else {
+        setError("Invalid data format received.");
+      }
+      setError(null);
     } catch (err) {
       setError(
         err.response
           ? `Error ${err.response.status}: ${err.response.statusText}`
           : "Server is unreachable. Please try again later."
       );
-      setBackEndData([]);
     }
   };
 
@@ -43,7 +43,7 @@ function Stock() {
           <div className="alert alert-danger">{error}</div>
         ) : (
           <div className="row">
-            {backEndData.length > 0 ? (
+            {backEndData && backEndData.length > 0 ? (
               backEndData.map((element) => (
                 <ProductItem
                   key={element.id}
