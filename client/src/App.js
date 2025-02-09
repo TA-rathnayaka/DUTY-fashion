@@ -26,8 +26,6 @@ function App() {
               { icon: { icon: faAddressBook }, path: "/contact" },
               { icon: { icon: faInfoCircle }, path: "/about" },
             ]}
-            isAdmin={true}
-            logged={true}
           />
           <Outlet />
         </>
