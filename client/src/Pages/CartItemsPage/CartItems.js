@@ -18,7 +18,7 @@ function CartItems() {
   const fetchDate = async () => {
     try {
       const response = await axios.get(`/cart`);
-      setCartData(response.data);
+      setCartData(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("There was an error fetching data", error);
     }
