@@ -12,7 +12,7 @@ function ListOfProducts() {
     try {
       const response = await axios.get(`/all/${gender}/${category}`);
       setBackEndData(response.data);
-      setError(null); // Reset error if request succeeds
+      setError(null);
     } catch (err) {
       setError(
         err.response

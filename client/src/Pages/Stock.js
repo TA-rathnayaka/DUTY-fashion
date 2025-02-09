@@ -15,7 +15,10 @@ function Stock() {
       const response = await axios.get("/data", {
         params: { type: "categories", gender: gender },
       });
-      setBackEndData(response.data);
+
+      console.log("API Response:", response.data); // Debugging log
+
+      setBackEndData(Array.isArray(response.data) ? response.data : []);
       setError(null); // Reset error if request succeeds
     } catch (err) {
       setError(
@@ -23,6 +26,7 @@ function Stock() {
           ? `Error ${err.response.status}: ${err.response.statusText}`
           : "Server is unreachable. Please try again later."
       );
+      setBackEndData([]);
     }
   };
 
