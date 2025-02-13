@@ -23,12 +23,17 @@ route.post("/signup", async (req, res, next) => {
     res.status(500).json("Failed to signup");
   }
 });
-app.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) return next(err);
-    if (!user) {
-      return res.status(401).json({ message: info.message });
-    }
+route.post(
+  "/login",
+  (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) return next(err);
+      if (!user) {
+        return res.status(401).json({ message: info.message });
+      }
+    })(req, res, next);
+  },
+  (req, res) => {
     req.login(user, (err) => {
       if (err) return next(err);
       return res.status(200).json({
@@ -36,9 +41,8 @@ app.post("/login", (req, res, next) => {
         user: { user_id: user.user_id, email: user.email },
       });
     });
-  })(req, res, next);
-});
-
+  }
+);
 route.post("/logout", async (req, res) => {
   req.logout((err) => {
     if (err) {
