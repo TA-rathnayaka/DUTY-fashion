@@ -9,9 +9,11 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const result = await db.query("SELECT * FROM user_table WHERE user_id=$1", [
-      id,
-    ]);
+    const result = await db.query(
+      "SELECT user_id, email, is_admin FROM user_table WHERE user_id = $1",
+      [id]
+    );
+
     if (result.rows.length === 0) {
       return done(new Error("User not found"));
     }
@@ -21,24 +23,36 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-export default passport.use(
-  new Strategy({ usernameField: "email" }, async (email, password, done) => {
+const localStrategy = new Strategy(
+  {
+    usernameField: "email",
+    passwordField: "password",
+  },
+  async (email, password, done) => {
     try {
-      const result = await db.query("SELECT * from user_table WHERE email=$1", [
-        email,
-      ]);
+      const result = await db.query(
+        "SELECT * FROM user_table WHERE email = $1",
+        [email]
+      );
+
       if (result.rows.length === 0) {
-        return done(null, false, { message: "Incorrect email." });
+        return done(null, false, { message: "Incorrect email" });
       }
+
       const user = result.rows[0];
-      const isAuthenticated = await bcrypt.compare(password, user.password);
-      if (!isAuthenticated) {
-        return done(null, false, { message: "Incorrect password." });
+      const isValidPassword = await bcrypt.compare(password, user.password);
+
+      if (!isValidPassword) {
+        return done(null, false, { message: "Incorrect password" });
       }
 
       return done(null, user);
     } catch (error) {
-      return done(error, null);
+      return done(error);
     }
-  })
+  }
 );
+
+passport.use(localStrategy);
+
+export default passport;
