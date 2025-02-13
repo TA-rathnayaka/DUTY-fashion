@@ -22,7 +22,6 @@ app.use(
   })
 );
 
-app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
@@ -40,6 +39,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static("public"));
 app.use(router);
 
 async function data() {
