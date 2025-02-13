@@ -4,15 +4,16 @@ import { useSearchParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem/ProductItem";
 
 function Stock() {
-  const [onPlus, setOnPlus] = useState(false);
   const [backEndData, setBackEndData] = useState([]);
   const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const gender = searchParams.get("gender");
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const fetchData = async () => {
     try {
-      const response = await axios.get("/data", {
+      const response = await axios.get(`${apiUrl}/data`, {
         params: { type: "categories", gender: gender },
       });
       if (Array.isArray(response.data)) {
