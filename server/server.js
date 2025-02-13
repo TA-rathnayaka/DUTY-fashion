@@ -18,6 +18,7 @@ app.use(
   cors({
     origin: ["https://dutyfashion.netlify.app", "http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 
