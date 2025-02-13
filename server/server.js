@@ -32,8 +32,8 @@ app.use(
     resave: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set dynamically
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      secure: true,
+      sameSite: "None",
     },
   })
 );
