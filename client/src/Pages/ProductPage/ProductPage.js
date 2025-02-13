@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import placeholder from "./images/placeholder.webp";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function ProductPage() {
   const { id } = useParams();
   const [item, setItem] = useState({});
@@ -18,7 +20,7 @@ function ProductPage() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`/all/${id}`);
+      const response = await axios.get(`${apiUrl}/all/${id}`);
 
       // Filter the images for the first item (primary image group by product)
       const filteredImages = response.data
@@ -43,7 +45,7 @@ function ProductPage() {
     const data = { item_id: item.item_id, wanted_amount: quantity };
     console.log("Submitting data:", data);
     try {
-      const response = await axios.post("/cart", data, {
+      const response = await axios.post(`${apiUrl}/cart`, data, {
         headers: {
           "Content-Type": "application/json",
         },

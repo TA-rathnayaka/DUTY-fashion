@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext(null);
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -14,7 +15,7 @@ export default function AuthProvider({ children }) {
   const checkAuth = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/me");
+      const response = await axios.get(`${apiUrl}/me`);
       setUser(response.data);
       return response.data;
     } catch (error) {
@@ -27,7 +28,8 @@ export default function AuthProvider({ children }) {
   const login = async (email, password) => {
     const data = { email, password };
     try {
-      const response = await axios.post("/login", data, {
+      console.log(`${apiUrl}/login`);
+      const response = await axios.post(`${apiUrl}/login`, data, {
         headers: { "Content-Type": "application/json" },
       });
       if (response.status === 200) {
@@ -57,7 +59,7 @@ export default function AuthProvider({ children }) {
   const signup = async (firstName, lastName, email, password) => {
     const data = { firstName, lastName, email, password };
     try {
-      const response = await axios.post("/signup", data, {
+      const response = await axios.post(`${apiUrl}/signup`, data, {
         headers: { "Content-Type": "application/json" },
       });
 
@@ -80,7 +82,7 @@ export default function AuthProvider({ children }) {
   };
   const logout = () => {
     setUser(null);
-    axios.post("/logout");
+    axios.post(`${apiUrl}/logout`);
   };
 
   return (

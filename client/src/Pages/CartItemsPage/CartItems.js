@@ -3,6 +3,8 @@ import CartItem from "../../components/CartItem/CartItem";
 import "./css/styles.css";
 import axios from "axios";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function CartItems() {
   const [cartData, setCartData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -17,7 +19,7 @@ function CartItems() {
 
   const fetchDate = async () => {
     try {
-      const response = await axios.get(`/cart`);
+      const response = await axios.get(`${apiUrl}/cart`);
       setCartData(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("There was an error fetching data", error);
@@ -27,7 +29,7 @@ function CartItems() {
   const onEdit = async (id, editedAmount) => {
     try {
       const response = await axios.patch(
-        "/cart",
+        `${apiUrl}/cart`,
         { item_id: id, wanted_amount: editedAmount },
         {
           headers: { "Content-Type": "application/json" },
@@ -62,7 +64,7 @@ function CartItems() {
   const onDelete = async (item_id) => {
     try {
       const response = await axios.delete(
-        `/cart/${item_id}`,
+        `${apiUrl}/cart/${item_id}`,
 
         {
           headers: { "Content-Type": "application/json" },

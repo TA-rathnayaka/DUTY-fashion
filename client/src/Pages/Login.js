@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import LoginCover from "../components/Login/LoginCover/LoginCover";
 import LoginSideCover from "../components/Login/LoginSideCover/LoginSideCover";
 import { useAuth } from "../Providers/AuthProvider";

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SignUpCover from "../components/Signup/SignupCover/SignupCover";
 import SignUpSideCover from "../components/Signup/SignupSideCover/LoginSideCover";
-import axios from "axios";
 import { useAuth } from "../Providers/AuthProvider";
 
 function Signup() {

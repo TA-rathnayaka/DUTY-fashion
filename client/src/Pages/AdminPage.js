@@ -5,13 +5,15 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function AdminPage() {
   const [AdminData, setAdminData] = useState([]);
   const [showAddItem, setShowAddItem] = useState(false);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`/all`);
+      const response = await axios.get(`${apiUrl}/all`);
       const groupedData = response.data.reduce((acc, item) => {
         if (!acc[item.product_id]) {
           acc[item.product_id] = {
@@ -53,7 +55,7 @@ function AdminPage() {
 
     try {
       const productResponse = await axios.post(
-        "/all",
+        `${apiUrl}/all`,
         {
           product_name: product_name,
           category: category,
@@ -70,7 +72,7 @@ function AdminPage() {
       const productId = productResponse.data.product_id;
 
       await axios.post(
-        "/images",
+        `${apiUrl}/images`,
         {
           product_id: productId,
           image_url: image,
@@ -83,7 +85,7 @@ function AdminPage() {
 
       const itemRequests = sizes.map((size, index) => {
         return axios.post(
-          "/items",
+          `${apiUrl}/items`,
           {
             product_id: productId,
             size: size,
@@ -123,11 +125,15 @@ function AdminPage() {
       const hasImage = editedItem.image !== undefined;
 
       if (hasProductName || hasDescription || hasImage) {
-        const response = await axios.patch(`/all/${product_id}`, editedItem, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.patch(
+          `${apiUrl}/all/${product_id}`,
+          editedItem,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         console.log("Product details updated:", response.data);
       }
@@ -150,7 +156,7 @@ function AdminPage() {
           if (price !== undefined) updatedItemDetails.price = price;
 
           const itemResponse = await axios.patch(
-            `/items/${item_id}`,
+            `${apiUrl}/items/${item_id}`,
             updatedItemDetails,
             {
               headers: { "Content-Type": "application/json" },
@@ -168,7 +174,7 @@ function AdminPage() {
 
   const onDelete = async (product_id) => {
     try {
-      const response = await axios.delete(`/product/${product_id}`);
+      const response = await axios.delete(`${apiUrl}/product/${product_id}`);
       setAdminData((items) =>
         items.filter((item) => item.product_id !== product_id)
       );

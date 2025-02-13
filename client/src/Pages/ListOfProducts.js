@@ -3,6 +3,8 @@ import ProductItem from "../components/ProductItem/ProductItem";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function ListOfProducts() {
   const { gender, category } = useParams();
   const [backEndData, setBackEndData] = useState([]);
@@ -10,7 +12,7 @@ function ListOfProducts() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`/all/${gender}/${category}`);
+      const response = await axios.get(`${apiUrl}/all/${gender}/${category}`);
       setBackEndData(response.data);
       setError(null);
     } catch (err) {
