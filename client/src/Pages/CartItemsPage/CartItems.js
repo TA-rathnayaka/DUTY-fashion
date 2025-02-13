@@ -3,6 +3,7 @@ import CartItem from "../../components/CartItem/CartItem";
 import "./css/styles.css";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
 const apiUrl = process.env.REACT_APP_API_URL;
 function CartItems() {
   const [cartData, setCartData] = useState([]);
@@ -62,13 +63,7 @@ function CartItems() {
 
   const onDelete = async (item_id) => {
     try {
-      const response = await axios.delete(
-        `${apiUrl}/cart/${item_id}`,
-
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const response = await axios.delete(`${apiUrl}/cart/${item_id}`);
       if (response.status === 200) {
         setCartData(cartData.filter((item) => item.item_id !== item_id));
         console.log("successfully deleted the cart item");

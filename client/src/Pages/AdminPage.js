@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 const apiUrl = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true;
+
 function AdminPage() {
   const [AdminData, setAdminData] = useState([]);
   const [showAddItem, setShowAddItem] = useState(false);

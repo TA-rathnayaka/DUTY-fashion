@@ -1,4 +1,3 @@
-import { Router } from "express";
 import db from "../database/db.js";
 import route from "./users.js";
 
@@ -240,6 +239,7 @@ route.delete("/cart/:item_id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 route.get("/all", async (req, res) => {
   try {
     const response = await db.query(

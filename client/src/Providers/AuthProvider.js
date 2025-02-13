@@ -3,6 +3,7 @@ import axios from "axios";
 
 const AuthContext = createContext(null);
 const apiUrl = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true;
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -15,7 +16,9 @@ export default function AuthProvider({ children }) {
   const checkAuth = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${apiUrl}/me`);
+      const response = await axios.get(`${apiUrl}/me`, {
+        headers: { "Content-Type": "application/json" },
+      });
       setUser(response.data);
       return response.data;
     } catch (error) {

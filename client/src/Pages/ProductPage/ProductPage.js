@@ -8,6 +8,7 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import placeholder from "./images/placeholder.webp";
 
 const apiUrl = process.env.REACT_APP_API_URL;
+axios.defaults.withCredentials = true;
 
 function ProductPage() {
   const { id } = useParams();
