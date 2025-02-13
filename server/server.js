@@ -31,11 +31,9 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      cookie: {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-      },
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Set dynamically
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     },
   })
 );
