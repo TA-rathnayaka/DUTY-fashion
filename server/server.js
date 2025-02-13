@@ -16,7 +16,7 @@ const port = process.env.PORT || 4000;
 
 app.use(
   cors({
-    origin: "https://dutyfashion.netlify.app","http://localhost:3000/"
+    origin: ["https://dutyfashion.netlify.app", "http://localhost:3000"], // Correct syntax for multiple origins
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
