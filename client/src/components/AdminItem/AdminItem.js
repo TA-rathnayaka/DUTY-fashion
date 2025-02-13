@@ -34,7 +34,7 @@ function AdminItem({ item, onDelete, onEdit }) {
         setEditedPrice(selected.price);
       }
     }
-  }, [selectedSize]);
+  }, [selectedSize, sizes]);
 
   const handleEdit = () => {
     setIsEditing(true);

@@ -174,7 +174,7 @@ function AdminPage() {
 
   const onDelete = async (product_id) => {
     try {
-      const response = await axios.delete(`${apiUrl}/product/${product_id}`);
+      await axios.delete(`${apiUrl}/product/${product_id}`);
       setAdminData((items) =>
         items.filter((item) => item.product_id !== product_id)
       );
@@ -185,7 +185,6 @@ function AdminPage() {
       );
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);

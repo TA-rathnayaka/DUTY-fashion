@@ -15,29 +15,8 @@ function ProductPage() {
   const [allItems, setAllItems] = useState([]);
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const navigate = useNavigate();
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${apiUrl}/all/${id}`);
-
-      // Filter the images for the first item (primary image group by product)
-      const filteredImages = response.data
-        .filter((item) => item.product_id === parseInt(id))
-        .map((item) => ({
-          image_url: item.image_url,
-          is_primary: item.is_primary,
-        }));
-      console.log(filteredImages);
-      setAllItems(response.data);
-      setItem(response.data[0]);
-      setSelectedSize(response.data[0].size);
-      setImages(filteredImages); // Set the images to be displayed
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -61,6 +40,26 @@ function ProductPage() {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/all/${id}`);
+
+        // Filter the images for the first item (primary image group by product)
+        const filteredImages = response.data
+          .filter((item) => item.product_id === parseInt(id))
+          .map((item) => ({
+            image_url: item.image_url,
+            is_primary: item.is_primary,
+          }));
+        console.log(filteredImages);
+        setAllItems(response.data);
+        setItem(response.data[0]);
+        setSelectedSize(response.data[0].size);
+        // setImages(filteredImages); // Set the images to be displayed
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
     fetchData();
   }, [id]);
 

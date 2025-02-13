@@ -10,21 +10,21 @@ function ListOfProducts() {
   const [backEndData, setBackEndData] = useState([]);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${apiUrl}/all/${gender}/${category}`);
-      setBackEndData(response.data);
-      setError(null);
-    } catch (err) {
-      setError(
-        err.response
-          ? `Error ${err.response.status}: ${err.response.statusText}`
-          : "Server is unreachable. Please try again later."
-      );
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/all/${gender}/${category}`);
+        setBackEndData(response.data);
+        setError(null);
+      } catch (err) {
+        setError(
+          err.response
+            ? `Error ${err.response.status}: ${err.response.statusText}`
+            : "Server is unreachable. Please try again later."
+        );
+      }
+    };
+
     fetchData();
   }, [gender, category]);
 
