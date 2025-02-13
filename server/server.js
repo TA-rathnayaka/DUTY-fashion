@@ -14,6 +14,13 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
+app.use(
+  cors({
+    origin: "https://dutyfashion.netlify.app","http://localhost:3000/"
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
