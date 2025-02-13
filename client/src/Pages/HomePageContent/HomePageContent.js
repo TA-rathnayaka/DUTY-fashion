@@ -8,10 +8,10 @@ function HomePageContent() {
   const [getGridElement, setGridElement] = useState(null);
   let firstGridSize = 6;
   let secondGridSize = 6;
-  if (getGridElement == 0) {
+  if (getGridElement === 0) {
     firstGridSize = 8;
     secondGridSize = 4;
-  } else if (getGridElement == 1) {
+  } else if (getGridElement === 1) {
     firstGridSize = 4;
     secondGridSize = 8;
   } else {

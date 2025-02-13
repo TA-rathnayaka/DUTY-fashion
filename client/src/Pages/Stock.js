@@ -1,27 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem/ProductItem";
 
+const apiUrl = process.env.REACT_APP_API_URL;
 function Stock() {
   const [backEndData, setBackEndData] = useState([]);
   const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const gender = searchParams.get("gender");
 
-  const apiUrl = process.env.REACT_APP_API_URL;
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const response = await axios.get(`${apiUrl}/data`, {
-        params: { type: "categories", gender: gender },
+        params: { type: "categories", gender },
       });
       if (Array.isArray(response.data)) {
         setBackEndData(response.data);
+        setError(null);
       } else {
         setError("Invalid data format received.");
       }
-      setError(null);
     } catch (err) {
       setError(
         err.response
@@ -29,11 +28,11 @@ function Stock() {
           : "Server is unreachable. Please try again later."
       );
     }
-  };
+  }, [gender]);
 
   useEffect(() => {
     fetchData();
-  }, [gender]);
+  }, [fetchData]);
 
   return (
     <section>
