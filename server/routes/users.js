@@ -23,9 +23,13 @@ route.post("/signup", async (req, res, next) => {
     res.status(500).json("Failed to signup");
   }
 });
-route.post("/login", passport.authenticate("local"), (req, res) => {
-  return res.status(200).json({ user_id: req.user.user_id, isAdmin: true });
-});
+route.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "/login" }),
+  (req, res) => {
+    return res.status(200).json({ user_id: req.user.user_id, isAdmin: true });
+  }
+);
 
 route.post("/logout", async (req, res) => {
   req.logout((err) => {
