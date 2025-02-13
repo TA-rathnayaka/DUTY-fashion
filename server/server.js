@@ -13,6 +13,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: ["https://dutyfashion.netlify.app", "http://localhost:3000"],
@@ -29,6 +30,7 @@ app.use(
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
+    proxy: true,
     cookie: {
       httpOnly: true,
       secure: true,
