@@ -4,7 +4,6 @@ import cors from "cors";
 import bcrypt from "bcrypt";
 import session from "express-session";
 import passport from "passport";
-import { Strategy } from "passport-local";
 import dotenv from "dotenv";
 import router from "./routes/index.js";
 import db from "./database/db.js";
