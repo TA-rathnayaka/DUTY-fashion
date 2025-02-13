@@ -4,7 +4,6 @@ import "./css/styles.css";
 import axios from "axios";
 
 const apiUrl = process.env.REACT_APP_API_URL;
-
 function CartItems() {
   const [cartData, setCartData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);

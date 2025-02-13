@@ -2,10 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext(null);
-
 const apiUrl = process.env.REACT_APP_API_URL;
-
-axios.defaults.withCredentials = true;
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -28,16 +25,19 @@ export default function AuthProvider({ children }) {
       setLoading(false);
     }
   };
-
   const login = async (email, password) => {
     const data = { email, password };
     try {
       const response = await axios.post(`${apiUrl}/login`, data, {
         headers: { "Content-Type": "application/json" },
       });
-
       if (response.status === 200) {
-        await checkAuth(); // Fetch user data after successful login
+        const userData = {
+          user_id: response.data.user_id,
+          isAdmin: response.data.isAdmin,
+        };
+        setUser(userData);
+        console.log(userData);
         return { success: true, message: "Sign in successful" };
       }
     } catch (error) {

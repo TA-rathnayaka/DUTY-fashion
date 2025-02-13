@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import ProductItem from "../components/ProductItem/ProductItem";
 
 const apiUrl = process.env.REACT_APP_API_URL;
+
 function Stock() {
   const [backEndData, setBackEndData] = useState([]);
   const [error, setError] = useState(null);
