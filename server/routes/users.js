@@ -31,12 +31,10 @@ app.post("/login", (req, res, next) => {
     }
     req.login(user, (err) => {
       if (err) return next(err);
-      return res
-        .status(200)
-        .json({
-          message: "Login successful",
-          user: { user_id: user.user_id, email: user.email },
-        });
+      return res.status(200).json({
+        message: "Login successful",
+        user: { user_id: user.user_id, email: user.email },
+      });
     });
   })(req, res, next);
 });
